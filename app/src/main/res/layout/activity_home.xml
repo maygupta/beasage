@@ -81,7 +81,7 @@
             aigestudio:wheel_indicator_color="@color/brown"
             aigestudio:wheel_selected_item_text_color="@color/brown"
             android:layout_alignBottom="@+id/main_wheel_right"
-            android:layout_marginLeft="40dp" />
+            android:layout_marginLeft="20dp" />
 
 
         <com.aigestudio.wheelpicker.WheelPicker
@@ -126,53 +126,25 @@
     </RelativeLayout>
 
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/switch1"
-        android:layout_below="@+id/spinner"
-
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/spinner"
-        android:layout_toLeftOf="@+id/switch1"
-        android:text="Pages"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/brown"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/spinner"
-        android:layout_toRightOf="@+id/switch1"
-        android:layout_marginTop="5dp"
-        android:text="Slokas"
-        android:textColor="@color/brown"
-        />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/tvComplete"
+        android:layout_marginTop="10dp"
         android:text="To complete reading"
-        android:id="@+id/textView"
         android:textColor="@color/script"
-        android:layout_below="@+id/switch1"
+        android:layout_below="@+id/spinner"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp" />
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#0456e5"
         android:id="@+id/tvBook"
         android:textStyle="bold"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/tvComplete"
         android:layout_centerHorizontal="true"
          />
 
@@ -188,16 +160,16 @@
 
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:id="@+id/ivCircle"
         android:src="@drawable/circle_background"
-        android:layout_alignLeft="@+id/textView"
-        android:layout_alignStart="@+id/textView"
+        android:layout_alignLeft="@+id/tvBook"
+        android:layout_alignStart="@+id/tvBook"
         android:layout_below="@+id/tvDuration"
-        android:layout_alignRight="@+id/textView"
-        android:layout_alignEnd="@+id/textView"
-        android:layout_marginBottom="20dp" />
+        android:layout_alignRight="@+id/tvBook"
+        android:layout_alignEnd="@+id/tvBook"
+         />
 
     <TextView
         android:id="@+id/tvResult"
@@ -221,9 +193,39 @@
         android:text="pages"
         android:id="@+id/pageOrSloka"
         android:textColor="@color/script"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/ivCircle"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/switch1"
+        android:layout_below="@+id/pageOrSloka"
+        android:theme="@style/SCBSwitch"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pageOrSloka"
+        android:layout_toLeftOf="@+id/switch1"
+        android:text="Pages"
+        android:layout_alignTop="@+id/switch1"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pageOrSloka"
+        android:layout_toRightOf="@+id/switch1"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignTop="@+id/switch1"
+        android:text="Slokas"
+        android:textColor="@color/white"
+        />
 
 
 </RelativeLayout>

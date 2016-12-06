@@ -2,6 +2,7 @@ package com.example.mayank.beasage;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -69,7 +70,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
 
         setResultView();
 
-        Switch pageSlokaSwitch = (Switch) findViewById(R.id.switch1);
+        SwitchCompat pageSlokaSwitch = (SwitchCompat) findViewById(R.id.switch1);
         pageSlokaSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -102,8 +103,13 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     }
 
     private void setResultView() {
+
         TextView tvBook = (TextView) findViewById(R.id.tvBook);
-        tvBook.setText(books.get(curBookPos));
+
+        String complete = getColoredSpanned("To complete reading", "#FFCC33");
+        String book = getColoredSpanned(String.format(" %s", books.get(curBookPos)), "#303F9F");
+        tvBook.setText(Html.fromHtml(book));
+
         TextView tvDuration = (TextView) findViewById(R.id.tvDuration);
         String in = getColoredSpanned("in", "#FFCC33");
         String duration = getColoredSpanned(String.format(" %d %s", currentCountPos + 1, getDurationByPos()), "#fd951b1b");
@@ -163,16 +169,16 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             double numPagesDay = 0;
             switch (currentDurationPos) {
                 case 0:
-                    numPagesDay = selScripturePages * 1.0 / (currentCountPos + 1);
+                    numPagesDay = selScripturePages  / (currentCountPos + 1);
                     break;
                 case 1:
-                    numPagesDay = selScripturePages * 1.0 / (7 * (currentCountPos + 1));
+                    numPagesDay = selScripturePages  / (7 * (currentCountPos + 1));
                     break;
                 case 2:
-                    numPagesDay = selScripturePages * 1.0 / (30 * (currentCountPos + 1));
+                    numPagesDay = selScripturePages / (30 * (currentCountPos + 1));
                     break;
                 case 3:
-                    numPagesDay = selScripturePages * 1.0 / (365 * (currentCountPos + 1));
+                    numPagesDay = selScripturePages / (365 * (currentCountPos + 1));
                     break;
             }
 
@@ -182,7 +188,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             numPagesDay = Math.ceil(numPagesDay);
             tvResult.setText(String.format("%d", Math.round(numPagesDay)));
             TextView pageOrSloka = (TextView) findViewById(R.id.pageOrSloka);
-            pageOrSloka.setText("pages");
+            pageOrSloka.setText("pages per day");
         } else {
             int selScriptureSlokas = 0;
             switch (curBookPos) {
@@ -217,27 +223,29 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             double numSlokasDay = 0.0;
             switch (currentDurationPos) {
                 case 0:
-                    numSlokasDay = selScriptureSlokas * 1.0 / (currentCountPos + 1);
+                    numSlokasDay = selScriptureSlokas / (currentCountPos + 1);
                     break;
                 case 1:
-                    numSlokasDay = selScriptureSlokas * 1.0 / (7 * (currentCountPos + 1));
+                    numSlokasDay = selScriptureSlokas / (7 * (currentCountPos + 1));
                     break;
                 case 2:
-                    numSlokasDay = selScriptureSlokas * 1.0 / (30 * (currentCountPos + 1));
+                    numSlokasDay = selScriptureSlokas / (30 * (currentCountPos + 1));
                     break;
                 case 3:
-                    numSlokasDay = selScriptureSlokas * 1.0 / (365 * (currentCountPos + 1));
+                    numSlokasDay = selScriptureSlokas / (365 * (currentCountPos + 1));
                     break;
             }
 
             if(selScriptureSlokas == 0) {
                 tvResult.setText("N/A");
             } else {
-                numSlokasDay = Math.ceil(numSlokasDay);
+                if(numSlokasDay < 1) {
+                    numSlokasDay = 1;
+                }
                 tvResult.setText(String.format("%d", Math.round(numSlokasDay)));
             }
             TextView pageOrSloka = (TextView) findViewById(R.id.pageOrSloka);
-            pageOrSloka.setText("slokas");
+            pageOrSloka.setText("slokas per day");
         }
     }
 
