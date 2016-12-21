@@ -1,14 +1,14 @@
-package com.example.mayank.beasage;
+package com.iskcon.isv.beasage;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Html;
-import android.view.Gravity;
-import android.view.ViewGroup;
+import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.FrameLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +24,10 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     int currentCountPos = 2;
     int curBookPos = 2;
     boolean isPage = true;
+    WheelPicker wheelPicker1;
+    WheelPicker wheelPicker2;
+    WheelPicker wheelPicker3;
+    SwitchCompat pageSlokaSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         books.add("Nectar of Instruction");
         books.add("TLC");
 
-        WheelPicker wheelPicker1 = (WheelPicker) findViewById(R.id.main_wheel_left);
+        wheelPicker1 = (WheelPicker) findViewById(R.id.main_wheel_left);
         wheelPicker1.setData(books);
 
         wheelPicker1.setSelectedItemPosition(2);
@@ -51,7 +55,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         data2.add("  Month");
         data2.add("  Year");
 
-        WheelPicker wheelPicker2 = (WheelPicker) findViewById(R.id.main_wheel_center);
+        wheelPicker2 = (WheelPicker) findViewById(R.id.main_wheel_center);
         wheelPicker2.setData(data2);
         wheelPicker2.setSelectedItemPosition(2);
 
@@ -60,7 +64,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         for (int i = 1; i < 30; i++)
             data3.add(String.format("  %d",i));
 
-        WheelPicker wheelPicker3 = (WheelPicker) findViewById(R.id.main_wheel_right);
+        wheelPicker3 = (WheelPicker) findViewById(R.id.main_wheel_right);
         wheelPicker3.setData(data3);
         wheelPicker3.setSelectedItemPosition(2);
 
@@ -70,7 +74,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
 
         setResultView();
 
-        SwitchCompat pageSlokaSwitch = (SwitchCompat) findViewById(R.id.switch1);
+        pageSlokaSwitch = (SwitchCompat) findViewById(R.id.switch1);
         pageSlokaSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -95,6 +99,127 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 break;
         }
         setResultView();
+    }
+
+    public void handleReminder(View tvReminder) {
+        
+    }
+
+    public void handleOpenBbta(View tvBbta) {
+        String url = "http://www.bbtacademic.com";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+    }
+
+    public void handleViewDemo(View tvDemo) {
+        curBookPos = 0;
+        final Handler handler = new Handler();
+
+//        Toast.makeText(this, "Starting Demo!", Toast.LENGTH_SHORT).show();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                wheelPicker1.setSelectedItemPosition(4);
+            }
+        }, 500);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                wheelPicker1.setSelectedItemPosition(5);
+            }
+        }, 1000);
+
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                wheelPicker1.setSelectedItemPosition(6);
+            }
+        }, 1500);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                wheelPicker1.setSelectedItemPosition(7);
+            }
+        }, 2000);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                wheelPicker1.setSelectedItemPosition(0);
+            }
+        }, 2500);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                wheelPicker2.setSelectedItemPosition(1);
+            }
+        }, 3000);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                wheelPicker2.setSelectedItemPosition(0);
+            }
+        }, 3500);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                wheelPicker3.setSelectedItemPosition(1);
+            }
+        }, 4000);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                wheelPicker3.setSelectedItemPosition(0);
+                setResultView();
+            }
+        }, 4500);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                wheelPicker3.setSelectedItemPosition(0);
+                pageSlokaSwitch.setChecked(true);
+                setResultView();
+            }
+        }, 6000);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                wheelPicker3.setSelectedItemPosition(0);
+                pageSlokaSwitch.setChecked(false);
+                setResultView();
+            }
+        }, 7000);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                Toast.makeText(getApplicationContext(), "Demo Complete!", Toast.LENGTH_LONG).show();
+            }
+        }, 8000);
+
     }
 
     private String getColoredSpanned(String text, String color) {

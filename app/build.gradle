@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.2"
 
     defaultConfig {
-        applicationId "com.example.mayank.beasage"
+        applicationId "com.iskcon.isv.beasage"
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1

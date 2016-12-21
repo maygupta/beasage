@@ -1,4 +1,4 @@
-package com.example.mayank.beasage;
+package com.iskcon.isv.beasage;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.example.mayank.beasage;
+package com.iskcon.isv.beasage;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

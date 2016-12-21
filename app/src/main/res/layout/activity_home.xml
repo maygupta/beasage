@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/app"
-    tools:context="com.example.mayank.beasage.Home">
+    tools:context="com.iskcon.isv.beasage.Home">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -77,6 +77,7 @@
             aigestudio:wheel_item_align="right"
             aigestudio:wheel_item_text_color="#FFF"
             aigestudio:wheel_item_text_size="20sp"
+            aigestudio:wheel_visible_item_count="4"
             aigestudio:wheel_indicator="true"
             aigestudio:wheel_indicator_color="@color/brown"
             aigestudio:wheel_selected_item_text_color="@color/brown"
@@ -92,6 +93,7 @@
             aigestudio:wheel_atmospheric="true"
             aigestudio:wheel_curved="true"
             aigestudio:wheel_cyclic="true"
+            aigestudio:wheel_visible_item_count="4"
             aigestudio:wheel_indicator="true"
             aigestudio:wheel_item_text_color="#FFF"
             aigestudio:wheel_item_text_size="20sp"
@@ -110,6 +112,7 @@
             android:background="@color/colorPrimary"
             aigestudio:wheel_atmospheric="true"
             aigestudio:wheel_curved="true"
+            aigestudio:wheel_visible_item_count="4"
             aigestudio:wheel_indicator="true"
             aigestudio:wheel_cyclic="false"
             aigestudio:wheel_item_align="left"
@@ -164,11 +167,11 @@
         android:layout_height="120dp"
         android:id="@+id/ivCircle"
         android:src="@drawable/circle_background"
-        android:layout_alignLeft="@+id/tvBook"
-        android:layout_alignStart="@+id/tvBook"
+        android:layout_alignLeft="@+id/tvComplete"
+        android:layout_alignStart="@+id/tvComplete"
         android:layout_below="@+id/tvDuration"
-        android:layout_alignRight="@+id/tvBook"
-        android:layout_alignEnd="@+id/tvBook"
+        android:layout_alignRight="@+id/tvComplete"
+        android:layout_alignEnd="@+id/tvComplete"
          />
 
     <TextView
@@ -225,6 +228,46 @@
         android:layout_alignTop="@+id/switch1"
         android:text="Slokas"
         android:textColor="@color/white"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="View Demo"
+        android:onClick="handleViewDemo"
+        android:id="@+id/tvDemo"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:layout_marginBottom="5dp"
+         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Order Books"
+        android:id="@+id/tvBBTA"
+        android:onClick="handleOpenBbta"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Set Reminder"
+        android:id="@+id/tvReminder"
+        android:onClick="handleReminder"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
         />
 
 
