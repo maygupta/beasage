@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aigestudio.wheelpicker.WheelPicker;
+import com.michael.easydialog.EasyDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,9 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     WheelPicker wheelPicker2;
     WheelPicker wheelPicker3;
     SwitchCompat pageSlokaSwitch;
+    EasyDialog bookDialog;
+    EasyDialog switchDialog;
+    EasyDialog resultsDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +106,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     }
 
     public void handleReminder(View tvReminder) {
-        
+
     }
 
     public void handleOpenBbta(View tvBbta) {
@@ -113,6 +117,57 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     }
 
     public void handleViewDemo(View tvDemo) {
+
+        View view = this.getLayoutInflater().inflate(R.layout.layout_tip_content_horizontal, null);
+        bookDialog = new EasyDialog(Home.this)
+                .setLayout(view)
+                .setBackgroundColor(Home.this.getResources().getColor(R.color.background_color_black))
+                // .setLocation(new location[])//point in screen
+                .setLocationByAttachedView(findViewById(R.id.main_wheel_left))
+                .setGravity(EasyDialog.GRAVITY_BOTTOM)
+                .setAnimationTranslationShow(EasyDialog.DIRECTION_X, 1000, -600, 100, -50, 50, 0)
+                .setAnimationAlphaShow(1000, 0.3f, 1.0f)
+                .setAnimationTranslationDismiss(EasyDialog.DIRECTION_X, 500, -50, 800)
+                .setAnimationAlphaDismiss(500, 1.0f, 0.0f)
+                .setTouchOutsideDismiss(true)
+                .setMatchParent(false)
+                .setMarginLeftAndRight(24, 24)
+                .show();
+
+        View view2 = this.getLayoutInflater().inflate(R.layout.layout_switch_tip, null);
+        switchDialog = new EasyDialog(Home.this)
+                .setLayout(view2)
+                .setBackgroundColor(Home.this.getResources().getColor(R.color.background_color_black))
+                // .setLocation(new location[])//point in screen
+                .setLocationByAttachedView(findViewById(R.id.switch1))
+                .setGravity(EasyDialog.GRAVITY_BOTTOM)
+                .setAnimationTranslationShow(EasyDialog.DIRECTION_X, 1000, -600, 100, -50, 50, 0)
+                .setAnimationAlphaShow(1000, 0.3f, 1.0f)
+                .setAnimationTranslationDismiss(EasyDialog.DIRECTION_X, 500, -50, 800)
+                .setAnimationAlphaDismiss(500, 1.0f, 0.0f)
+                .setTouchOutsideDismiss(true)
+                .setMatchParent(false)
+                .setMarginLeftAndRight(24, 24);
+
+        View view3 = this.getLayoutInflater().inflate(R.layout.layout_results_tip, null);
+        resultsDialog = new EasyDialog(Home.this)
+                .setLayout(view3)
+                .setBackgroundColor(Home.this.getResources().getColor(R.color.background_color_black))
+                // .setLocation(new location[])//point in screen
+                .setLocationByAttachedView(findViewById(R.id.ivCircle))
+                .setGravity(EasyDialog.GRAVITY_BOTTOM)
+                .setAnimationTranslationShow(EasyDialog.DIRECTION_X, 1000, -600, 100, -50, 50, 0)
+                .setAnimationAlphaShow(1000, 0.3f, 1.0f)
+                .setAnimationTranslationDismiss(EasyDialog.DIRECTION_X, 500, -50, 800)
+                .setAnimationAlphaDismiss(500, 1.0f, 0.0f)
+                .setTouchOutsideDismiss(true)
+                .setMatchParent(false)
+                .setMarginLeftAndRight(24, 24);
+    }
+
+    public void startDemo(View v) {
+        bookDialog.dismiss();
+
         curBookPos = 0;
         final Handler handler = new Handler();
 
@@ -188,19 +243,33 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             public void run() {
                 // Do something after 5s = 5000ms
                 wheelPicker3.setSelectedItemPosition(0);
+                currentDurationPos = 0;
+                currentCountPos = 0;
                 setResultView();
+                resultsDialog.show();
             }
         }, 4500);
+
+    }
+
+    public void startSwitchDemo(View v) {
+        resultsDialog.dismiss();
+        switchDialog.show();
+    }
+
+    public void flipSwitch(View v) {
+        switchDialog.dismiss();
+        final Handler handler = new Handler();
 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // Do something after 5s = 5000ms
-                wheelPicker3.setSelectedItemPosition(0);
+
                 pageSlokaSwitch.setChecked(true);
                 setResultView();
             }
-        }, 6000);
+        }, 1000);
 
         handler.postDelayed(new Runnable() {
             @Override
@@ -210,7 +279,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 pageSlokaSwitch.setChecked(false);
                 setResultView();
             }
-        }, 7000);
+        }, 2000);
 
         handler.postDelayed(new Runnable() {
             @Override
@@ -218,8 +287,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 // Do something after 5s = 5000ms
                 Toast.makeText(getApplicationContext(), "Demo Complete!", Toast.LENGTH_LONG).show();
             }
-        }, 8000);
-
+        }, 3000);
     }
 
     private String getColoredSpanned(String text, String color) {
