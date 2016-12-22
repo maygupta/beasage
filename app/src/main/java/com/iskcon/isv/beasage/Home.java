@@ -110,7 +110,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     }
 
     public void handleOpenBbta(View tvBbta) {
-        String url = "http://www.bbtacademic.com";
+        String url = "http://bbtacademic.com/?product_cat=0&s=&post_type=product";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
@@ -133,6 +133,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 .setMatchParent(false)
                 .setMarginLeftAndRight(24, 24)
                 .show();
+        startDemo();
 
         View view2 = this.getLayoutInflater().inflate(R.layout.layout_switch_tip, null);
         switchDialog = new EasyDialog(Home.this)
@@ -165,9 +166,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 .setMarginLeftAndRight(24, 24);
     }
 
-    public void startDemo(View v) {
-        bookDialog.dismiss();
-
+    public void startDemo() {
         curBookPos = 0;
         final Handler handler = new Handler();
 
@@ -246,19 +245,24 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 currentDurationPos = 0;
                 currentCountPos = 0;
                 setResultView();
+                bookDialog.dismiss();
                 resultsDialog.show();
             }
         }, 4500);
 
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                resultsDialog.dismiss();
+                switchDialog.show();
+                flipSwitch();
+            }
+        }, 8000);
+
     }
 
-    public void startSwitchDemo(View v) {
-        resultsDialog.dismiss();
-        switchDialog.show();
-    }
-
-    public void flipSwitch(View v) {
-        switchDialog.dismiss();
+    public void flipSwitch() {
         final Handler handler = new Handler();
 
         handler.postDelayed(new Runnable() {
@@ -279,15 +283,16 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 pageSlokaSwitch.setChecked(false);
                 setResultView();
             }
-        }, 2000);
+        }, 3000);
 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // Do something after 5s = 5000ms
+                switchDialog.dismiss();
                 Toast.makeText(getApplicationContext(), "Demo Complete!", Toast.LENGTH_LONG).show();
             }
-        }, 3000);
+        }, 5000);
     }
 
     private String getColoredSpanned(String text, String color) {
