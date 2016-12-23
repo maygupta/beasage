@@ -104,27 +104,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             }
         });
 
-        // To read data from notification else set defaults
-        if(getIntent()!=null){
-            curBookPos = getIntent().getIntExtra(EXTRA_CURR_BOOK_POS,2);
-            currentDurationPos = getIntent().getIntExtra(EXTRA_CURRENT_DURATION_POS,2);
-            currentCountPos = getIntent().getIntExtra(EXTRA_CURRENT_COUNT_POS,2);
-
-            if(getIntent().getBooleanExtra(EXTRA_PAGES_SLOKA,false)){
-                pageSlokaSwitch.setChecked(true);
-            }
-
-            wheelPicker1.setSelectedItemPosition(curBookPos);
-            wheelPicker2.setSelectedItemPosition(currentDurationPos);
-            wheelPicker3.setSelectedItemPosition(currentCountPos);
-        }else{
-            wheelPicker1.setSelectedItemPosition(2);
-            wheelPicker2.setSelectedItemPosition(2);
-            wheelPicker3.setSelectedItemPosition(2);
-
-        }
-
-        setResultView();
+        readDataFromIntent(getIntent());
     }
 
     @Override
@@ -205,11 +185,33 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         alarmManager.cancel(pendingIntent);
     }
 
+    public void readDataFromIntent(Intent intent){
+        curBookPos = intent.getIntExtra(EXTRA_CURR_BOOK_POS,2);
+        currentDurationPos = intent.getIntExtra(EXTRA_CURRENT_DURATION_POS,2);
+        currentCountPos = intent.getIntExtra(EXTRA_CURRENT_COUNT_POS,2);
+
+        if(intent.getBooleanExtra(EXTRA_PAGES_SLOKA,false)){
+            pageSlokaSwitch.setChecked(true);
+        }
+
+        wheelPicker1.setSelectedItemPosition(curBookPos);
+        wheelPicker2.setSelectedItemPosition(currentDurationPos);
+        wheelPicker3.setSelectedItemPosition(currentCountPos);
+
+        setResultView();
+    }
+
     public void handleOpenBbta(View tvBbta) {
         String url = "http://bbtacademic.com/?product_cat=0&s=&post_type=product";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        readDataFromIntent(intent);
     }
 
     public void handleViewDemo(View tvDemo) {
