@@ -133,18 +133,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/tvComplete"
-        android:layout_marginTop="10dp"
-        android:text="To complete reading"
-        android:textColor="@color/script"
-        android:layout_below="@+id/spinner"
-        android:layout_centerHorizontal="true"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/tvBook"
         android:textStyle="bold"
         android:layout_below="@+id/tvComplete"
@@ -269,6 +257,16 @@
         android:layout_marginRight="10dp"
         android:layout_alignParentRight="true"
         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/tvComplete"
+        android:text="To complete reading"
+        android:textColor="@color/script"
+        android:layout_below="@+id/spinner"
+        android:layout_centerHorizontal="true"/>
 
 
 </RelativeLayout>

@@ -1,8 +1,14 @@
 package com.iskcon.isv.beasage;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
@@ -10,12 +16,14 @@ import android.text.Html;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.aigestudio.wheelpicker.WheelPicker;
 import com.michael.easydialog.EasyDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Home extends AppCompatActivity implements WheelPicker.OnItemSelectedListener {
@@ -32,11 +40,25 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     EasyDialog bookDialog;
     EasyDialog switchDialog;
     EasyDialog resultsDialog;
+    TextView tvBook;
+    TextView tvDuration;
+    TextView tvResult;
+    TextView pageOrSloka;
+    public static final String EXTRA_CURR_BOOK_POS="extra_curBookPos";
+    public static final String EXTRA_CURRENT_DURATION_POS="extra_currentDurationPos";
+    public static final String EXTRA_CURRENT_COUNT_POS="extra_currentCountPos";
+    public static final String EXTRA_PAGES_SLOKA="extra_pages_sloka";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        tvBook = (TextView) findViewById(R.id.tvBook);
+        tvDuration = (TextView) findViewById(R.id.tvDuration);
+        tvResult= (TextView) findViewById(R.id.tvResult);
+        pageOrSloka = (TextView) findViewById(R.id.pageOrSloka);
+
 
         books = new ArrayList<>();
         books.add("Bhagavad Gita");
@@ -51,7 +73,6 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         wheelPicker1 = (WheelPicker) findViewById(R.id.main_wheel_left);
         wheelPicker1.setData(books);
 
-        wheelPicker1.setSelectedItemPosition(2);
 
         List<String> data2 = new ArrayList<>();
         data2.add("  Day");
@@ -61,7 +82,6 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
 
         wheelPicker2 = (WheelPicker) findViewById(R.id.main_wheel_center);
         wheelPicker2.setData(data2);
-        wheelPicker2.setSelectedItemPosition(2);
 
         List<String> data3 = new ArrayList<>();
 
@@ -70,13 +90,10 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
 
         wheelPicker3 = (WheelPicker) findViewById(R.id.main_wheel_right);
         wheelPicker3.setData(data3);
-        wheelPicker3.setSelectedItemPosition(2);
 
         wheelPicker1.setOnItemSelectedListener(this);
         wheelPicker2.setOnItemSelectedListener(this);
         wheelPicker3.setOnItemSelectedListener(this);
-
-        setResultView();
 
         pageSlokaSwitch = (SwitchCompat) findViewById(R.id.switch1);
         pageSlokaSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -87,6 +104,27 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             }
         });
 
+        // To read data from notification else set defaults
+        if(getIntent()!=null){
+            curBookPos = getIntent().getIntExtra(EXTRA_CURR_BOOK_POS,2);
+            currentDurationPos = getIntent().getIntExtra(EXTRA_CURRENT_DURATION_POS,2);
+            currentCountPos = getIntent().getIntExtra(EXTRA_CURRENT_COUNT_POS,2);
+
+            if(getIntent().getBooleanExtra(EXTRA_PAGES_SLOKA,false)){
+                pageSlokaSwitch.setChecked(true);
+            }
+
+            wheelPicker1.setSelectedItemPosition(curBookPos);
+            wheelPicker2.setSelectedItemPosition(currentDurationPos);
+            wheelPicker3.setSelectedItemPosition(currentCountPos);
+        }else{
+            wheelPicker1.setSelectedItemPosition(2);
+            wheelPicker2.setSelectedItemPosition(2);
+            wheelPicker3.setSelectedItemPosition(2);
+
+        }
+
+        setResultView();
     }
 
     @Override
@@ -106,7 +144,65 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     }
 
     public void handleReminder(View tvReminder) {
+        showTimePickerDialog();
+    }
 
+    //This functions shows timepicker in 24 hour format
+    public void showTimePickerDialog(){
+
+        cancelReminder(); // To cancel any previous Reminder
+
+        Calendar currentTime = Calendar.getInstance();
+        int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = currentTime.get(Calendar.MINUTE);
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(Home.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                Calendar cal=Calendar.getInstance();
+                cal.set(Calendar.HOUR_OF_DAY,selectedHour);
+                cal.set(Calendar.MINUTE,selectedMinute);
+                Toast.makeText(Home.this,"Reminder set at "+selectedHour+":"+selectedMinute +" to completely read "+tvBook.getText().toString(),Toast.LENGTH_LONG).show();
+                setReminder(cal);
+            }
+        }, hour, minute, true);//Yes 24 hour time
+        mTimePicker.setTitle("Select Reminder Time");
+        mTimePicker.show();
+    }
+
+    public void setReminder(Calendar cal){
+
+        String contextText="To complete reading "+tvBook.getText().toString()+" "+tvDuration.getText().toString()+" "+tvResult.getText().toString()+" "+pageOrSloka.getText().toString();
+        NotificationCompat.Builder builder =
+            new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.circle_background)
+                .setContentTitle("Reminder")
+                .setContentText(contextText)
+                .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL) // requires VIBRATE permission
+                .setStyle(new NotificationCompat.BigTextStyle()
+                    .bigText(contextText));
+
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(EXTRA_CURR_BOOK_POS, curBookPos);
+        notificationIntent.putExtra(EXTRA_CURRENT_COUNT_POS, currentCountPos);
+        notificationIntent.putExtra(EXTRA_CURRENT_DURATION_POS, currentDurationPos);
+        notificationIntent.putExtra(EXTRA_PAGES_SLOKA,pageSlokaSwitch.isChecked());
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, builder.build());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+
+    }
+
+    public void cancelReminder(){
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
     }
 
     public void handleOpenBbta(View tvBbta) {
@@ -302,13 +398,10 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
 
     private void setResultView() {
 
-        TextView tvBook = (TextView) findViewById(R.id.tvBook);
-
         String complete = getColoredSpanned("To complete reading", "#FFCC33");
         String book = getColoredSpanned(String.format(" %s", books.get(curBookPos)), "#303F9F");
         tvBook.setText(Html.fromHtml(book));
 
-        TextView tvDuration = (TextView) findViewById(R.id.tvDuration);
         String in = getColoredSpanned("in", "#FFCC33");
         String duration = getColoredSpanned(String.format(" %d %s", currentCountPos + 1, getDurationByPos()), "#fd951b1b");
         String pleaseRead = getColoredSpanned("please read", "#FFCC33");
@@ -330,8 +423,6 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         int niSlokas = 11;
         int tlSlokas = 0;
         int isSlokas = 19;
-
-        TextView tvResult = (TextView) findViewById(R.id.tvResult);
 
         if(isPage) {
             int selScripturePages = 0;
@@ -385,7 +476,6 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             }
             numPagesDay = Math.ceil(numPagesDay);
             tvResult.setText(String.format("%d", Math.round(numPagesDay)));
-            TextView pageOrSloka = (TextView) findViewById(R.id.pageOrSloka);
             pageOrSloka.setText("pages per day");
         } else {
             int selScriptureSlokas = 0;
@@ -442,7 +532,6 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 }
                 tvResult.setText(String.format("%d", Math.round(numSlokasDay)));
             }
-            TextView pageOrSloka = (TextView) findViewById(R.id.pageOrSloka);
             pageOrSloka.setText("slokas per day");
         }
     }
