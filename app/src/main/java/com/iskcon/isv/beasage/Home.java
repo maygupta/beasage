@@ -104,27 +104,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             }
         });
 
-        // To read data from notification else set defaults
-        if(getIntent()!=null){
-            curBookPos = getIntent().getIntExtra(EXTRA_CURR_BOOK_POS,2);
-            currentDurationPos = getIntent().getIntExtra(EXTRA_CURRENT_DURATION_POS,2);
-            currentCountPos = getIntent().getIntExtra(EXTRA_CURRENT_COUNT_POS,2);
-
-            if(getIntent().getBooleanExtra(EXTRA_PAGES_SLOKA,false)){
-                pageSlokaSwitch.setChecked(true);
-            }
-
-            wheelPicker1.setSelectedItemPosition(curBookPos);
-            wheelPicker2.setSelectedItemPosition(currentDurationPos);
-            wheelPicker3.setSelectedItemPosition(currentCountPos);
-        }else{
-            wheelPicker1.setSelectedItemPosition(2);
-            wheelPicker2.setSelectedItemPosition(2);
-            wheelPicker3.setSelectedItemPosition(2);
-
-        }
-
-        setResultView();
+        readDataFromIntent(getIntent());
     }
 
     @Override
@@ -147,7 +127,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         showTimePickerDialog();
     }
 
-    //This functions shows timepicker in 24 hour format
+    //This functions shows timepicker
     public void showTimePickerDialog(){
 
         cancelReminder(); // To cancel any previous Reminder
@@ -193,7 +173,8 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+        //alarmManager.setRepeating();
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 1000,pendingIntent);
 
     }
 
@@ -205,6 +186,22 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         alarmManager.cancel(pendingIntent);
     }
 
+    public void readDataFromIntent(Intent intent){
+        curBookPos = intent.getIntExtra(EXTRA_CURR_BOOK_POS,2);
+        currentDurationPos = intent.getIntExtra(EXTRA_CURRENT_DURATION_POS,2);
+        currentCountPos = intent.getIntExtra(EXTRA_CURRENT_COUNT_POS,2);
+
+        if(intent.getBooleanExtra(EXTRA_PAGES_SLOKA,false)){
+            pageSlokaSwitch.setChecked(true);
+        }
+
+        wheelPicker1.setSelectedItemPosition(curBookPos);
+        wheelPicker2.setSelectedItemPosition(currentDurationPos);
+        wheelPicker3.setSelectedItemPosition(currentCountPos);
+
+        setResultView();
+    }
+
     public void handleOpenBbta(View tvBbta) {
         String url = "http://bbtacademic.com/?product_cat=0&s=&post_type=product";
         Intent i = new Intent(Intent.ACTION_VIEW);
@@ -212,54 +209,60 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         startActivity(i);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        readDataFromIntent(intent);
+    }
+
     public void handleViewDemo(View tvDemo) {
 
         View view = this.getLayoutInflater().inflate(R.layout.layout_tip_content_horizontal, null);
         bookDialog = new EasyDialog(Home.this)
-                .setLayout(view)
-                .setBackgroundColor(Home.this.getResources().getColor(R.color.background_color_black))
-                // .setLocation(new location[])//point in screen
-                .setLocationByAttachedView(findViewById(R.id.main_wheel_left))
-                .setGravity(EasyDialog.GRAVITY_BOTTOM)
-                .setAnimationTranslationShow(EasyDialog.DIRECTION_X, 1000, -600, 100, -50, 50, 0)
-                .setAnimationAlphaShow(1000, 0.3f, 1.0f)
-                .setAnimationTranslationDismiss(EasyDialog.DIRECTION_X, 500, -50, 800)
-                .setAnimationAlphaDismiss(500, 1.0f, 0.0f)
-                .setTouchOutsideDismiss(true)
-                .setMatchParent(false)
-                .setMarginLeftAndRight(24, 24)
-                .show();
+            .setLayout(view)
+            .setBackgroundColor(Home.this.getResources().getColor(R.color.background_color_black))
+            // .setLocation(new location[])//point in screen
+            .setLocationByAttachedView(findViewById(R.id.main_wheel_left))
+            .setGravity(EasyDialog.GRAVITY_BOTTOM)
+            .setAnimationTranslationShow(EasyDialog.DIRECTION_X, 1000, -600, 100, -50, 50, 0)
+            .setAnimationAlphaShow(1000, 0.3f, 1.0f)
+            .setAnimationTranslationDismiss(EasyDialog.DIRECTION_X, 500, -50, 800)
+            .setAnimationAlphaDismiss(500, 1.0f, 0.0f)
+            .setTouchOutsideDismiss(true)
+            .setMatchParent(false)
+            .setMarginLeftAndRight(24, 24)
+            .show();
         startDemo();
 
         View view2 = this.getLayoutInflater().inflate(R.layout.layout_switch_tip, null);
         switchDialog = new EasyDialog(Home.this)
-                .setLayout(view2)
-                .setBackgroundColor(Home.this.getResources().getColor(R.color.background_color_black))
-                // .setLocation(new location[])//point in screen
-                .setLocationByAttachedView(findViewById(R.id.switch1))
-                .setGravity(EasyDialog.GRAVITY_BOTTOM)
-                .setAnimationTranslationShow(EasyDialog.DIRECTION_X, 1000, -600, 100, -50, 50, 0)
-                .setAnimationAlphaShow(1000, 0.3f, 1.0f)
-                .setAnimationTranslationDismiss(EasyDialog.DIRECTION_X, 500, -50, 800)
-                .setAnimationAlphaDismiss(500, 1.0f, 0.0f)
-                .setTouchOutsideDismiss(true)
-                .setMatchParent(false)
-                .setMarginLeftAndRight(24, 24);
+            .setLayout(view2)
+            .setBackgroundColor(Home.this.getResources().getColor(R.color.background_color_black))
+            // .setLocation(new location[])//point in screen
+            .setLocationByAttachedView(findViewById(R.id.switch1))
+            .setGravity(EasyDialog.GRAVITY_BOTTOM)
+            .setAnimationTranslationShow(EasyDialog.DIRECTION_X, 1000, -600, 100, -50, 50, 0)
+            .setAnimationAlphaShow(1000, 0.3f, 1.0f)
+            .setAnimationTranslationDismiss(EasyDialog.DIRECTION_X, 500, -50, 800)
+            .setAnimationAlphaDismiss(500, 1.0f, 0.0f)
+            .setTouchOutsideDismiss(true)
+            .setMatchParent(false)
+            .setMarginLeftAndRight(24, 24);
 
         View view3 = this.getLayoutInflater().inflate(R.layout.layout_results_tip, null);
         resultsDialog = new EasyDialog(Home.this)
-                .setLayout(view3)
-                .setBackgroundColor(Home.this.getResources().getColor(R.color.background_color_black))
-                // .setLocation(new location[])//point in screen
-                .setLocationByAttachedView(findViewById(R.id.ivCircle))
-                .setGravity(EasyDialog.GRAVITY_BOTTOM)
-                .setAnimationTranslationShow(EasyDialog.DIRECTION_X, 1000, -600, 100, -50, 50, 0)
-                .setAnimationAlphaShow(1000, 0.3f, 1.0f)
-                .setAnimationTranslationDismiss(EasyDialog.DIRECTION_X, 500, -50, 800)
-                .setAnimationAlphaDismiss(500, 1.0f, 0.0f)
-                .setTouchOutsideDismiss(true)
-                .setMatchParent(false)
-                .setMarginLeftAndRight(24, 24);
+            .setLayout(view3)
+            .setBackgroundColor(Home.this.getResources().getColor(R.color.background_color_black))
+            // .setLocation(new location[])//point in screen
+            .setLocationByAttachedView(findViewById(R.id.ivCircle))
+            .setGravity(EasyDialog.GRAVITY_BOTTOM)
+            .setAnimationTranslationShow(EasyDialog.DIRECTION_X, 1000, -600, 100, -50, 50, 0)
+            .setAnimationAlphaShow(1000, 0.3f, 1.0f)
+            .setAnimationTranslationDismiss(EasyDialog.DIRECTION_X, 500, -50, 800)
+            .setAnimationAlphaDismiss(500, 1.0f, 0.0f)
+            .setTouchOutsideDismiss(true)
+            .setMatchParent(false)
+            .setMarginLeftAndRight(24, 24);
     }
 
     public void startDemo() {
