@@ -151,7 +151,6 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     }
 
     public void setReminder(Calendar cal){
-
         String contextText="To complete reading "+tvBook.getText().toString()+" "+tvDuration.getText().toString()+" "+tvResult.getText().toString()+" "+pageOrSloka.getText().toString();
         NotificationCompat.Builder builder =
             new NotificationCompat.Builder(this)
@@ -173,8 +172,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        //alarmManager.setRepeating();
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 1000,pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),1000, pendingIntent);
 
     }
 
