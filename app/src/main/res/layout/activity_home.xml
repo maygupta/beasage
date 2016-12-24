@@ -58,19 +58,30 @@
         android:textColor="#fff"
         android:textSize="25dp" />
 
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/myImageViewText"
+        card_view:cardBackgroundColor="@color/app"
+        card_view:cardElevation="8dp"
+        card_view:cardCornerRadius="4dp">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:id="@+id/spinner"
-        android:layout_below="@+id/myImageViewText"
-        android:layout_marginTop="-20dp">
+        >
 
         <com.aigestudio.wheelpicker.WheelPicker
             android:id="@+id/main_wheel_left"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
+
             aigestudio:wheel_atmospheric="true"
             aigestudio:wheel_curved="true"
             aigestudio:wheel_cyclic="true"
@@ -89,7 +100,7 @@
             android:id="@+id/main_wheel_center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+
             aigestudio:wheel_atmospheric="true"
             aigestudio:wheel_curved="true"
             aigestudio:wheel_cyclic="true"
@@ -109,7 +120,6 @@
             android:id="@+id/main_wheel_right"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
             aigestudio:wheel_atmospheric="true"
             aigestudio:wheel_curved="true"
             aigestudio:wheel_visible_item_count="4"
@@ -125,16 +135,14 @@
             android:layout_gravity="right|center_vertical" />
 
 
-
     </RelativeLayout>
-
+    </android.support.v7.widget.CardView>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/tvBook"
-        android:textStyle="bold"
         android:layout_below="@+id/tvComplete"
         android:layout_centerHorizontal="true"
          />
@@ -144,7 +152,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/tvDuration"
-        android:textColor="@color/brown"
         android:layout_below="@+id/tvBook"
         android:layout_centerHorizontal="true"
          />
@@ -155,11 +162,11 @@
         android:layout_height="120dp"
         android:id="@+id/ivCircle"
         android:src="@drawable/circle_background"
-        android:layout_alignLeft="@+id/tvComplete"
-        android:layout_alignStart="@+id/tvComplete"
+        android:layout_alignLeft="@+id/tvDuration"
+        android:layout_alignStart="@+id/tvDuration"
         android:layout_below="@+id/tvDuration"
-        android:layout_alignRight="@+id/tvComplete"
-        android:layout_alignEnd="@+id/tvComplete"
+        android:layout_alignRight="@+id/tvDuration"
+        android:layout_alignEnd="@+id/tvDuration"
          />
 
     <TextView
@@ -263,7 +270,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/tvComplete"
-        android:text="To complete reading"
+        android:text="To complete"
+        android:layout_marginTop="20dp"
         android:textColor="@color/script"
         android:layout_below="@+id/spinner"
         android:layout_centerHorizontal="true"/>

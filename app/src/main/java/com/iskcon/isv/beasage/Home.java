@@ -142,7 +142,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 Calendar cal=Calendar.getInstance();
                 cal.set(Calendar.HOUR_OF_DAY,selectedHour);
                 cal.set(Calendar.MINUTE,selectedMinute);
-                Toast.makeText(Home.this,"Reminder set at "+selectedHour+":"+selectedMinute +" to completely read "+tvBook.getText().toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(Home.this,"Reminder set at "+selectedHour+":"+selectedMinute +" to read "+tvBook.getText().toString() + " daily",Toast.LENGTH_LONG).show();
                 setReminder(cal);
             }
         }, hour, minute, true);//Yes 24 hour time
@@ -220,7 +220,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             .setLayout(view)
             .setBackgroundColor(Home.this.getResources().getColor(R.color.background_color_black))
             // .setLocation(new location[])//point in screen
-            .setLocationByAttachedView(findViewById(R.id.main_wheel_left))
+            .setLocationByAttachedView(findViewById(R.id.spinner))
             .setGravity(EasyDialog.GRAVITY_BOTTOM)
             .setAnimationTranslationShow(EasyDialog.DIRECTION_X, 1000, -600, 100, -50, 50, 0)
             .setAnimationAlphaShow(1000, 0.3f, 1.0f)
@@ -238,7 +238,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             .setBackgroundColor(Home.this.getResources().getColor(R.color.background_color_black))
             // .setLocation(new location[])//point in screen
             .setLocationByAttachedView(findViewById(R.id.switch1))
-            .setGravity(EasyDialog.GRAVITY_BOTTOM)
+            .setGravity(EasyDialog.GRAVITY_TOP)
             .setAnimationTranslationShow(EasyDialog.DIRECTION_X, 1000, -600, 100, -50, 50, 0)
             .setAnimationAlphaShow(1000, 0.3f, 1.0f)
             .setAnimationTranslationDismiss(EasyDialog.DIRECTION_X, 500, -50, 800)
@@ -253,7 +253,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             .setBackgroundColor(Home.this.getResources().getColor(R.color.background_color_black))
             // .setLocation(new location[])//point in screen
             .setLocationByAttachedView(findViewById(R.id.ivCircle))
-            .setGravity(EasyDialog.GRAVITY_BOTTOM)
+            .setGravity(EasyDialog.GRAVITY_TOP)
             .setAnimationTranslationShow(EasyDialog.DIRECTION_X, 1000, -600, 100, -50, 50, 0)
             .setAnimationAlphaShow(1000, 0.3f, 1.0f)
             .setAnimationTranslationDismiss(EasyDialog.DIRECTION_X, 500, -50, 800)
@@ -400,11 +400,12 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     private void setResultView() {
 
         String complete = getColoredSpanned("To complete reading", "#FFCC33");
-        String book = getColoredSpanned(String.format(" %s", books.get(curBookPos)), "#303F9F");
+        // 303F9F
+        String book = getColoredSpanned(String.format(" %s", books.get(curBookPos)), "#951B1B");
         tvBook.setText(Html.fromHtml(book));
 
         String in = getColoredSpanned("in", "#FFCC33");
-        String duration = getColoredSpanned(String.format(" %d %s", currentCountPos + 1, getDurationByPos()), "#fd951b1b");
+        String duration = getColoredSpanned(String.format(" %d %s", currentCountPos + 1, getDurationByPos()), "#951B1B");
         String pleaseRead = getColoredSpanned("please read", "#FFCC33");
         tvDuration.setText(Html.fromHtml(in + " " + duration + " " + pleaseRead));
 
