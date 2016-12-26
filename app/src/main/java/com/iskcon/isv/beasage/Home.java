@@ -314,38 +314,11 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             @Override
             public void run() {
                 // Do something after 5s = 5000ms
-                wheelPicker2.setSelectedItemPosition(1);
-            }
-        }, 3000);
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Do something after 5s = 5000ms
-                wheelPicker2.setSelectedItemPosition(0);
-            }
-        }, 3500);
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Do something after 5s = 5000ms
-                wheelPicker3.setSelectedItemPosition(1);
-            }
-        }, 4000);
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Do something after 5s = 5000ms
-                wheelPicker3.setSelectedItemPosition(0);
-                currentDurationPos = 0;
-                currentCountPos = 0;
                 setResultView();
                 bookDialog.dismiss();
                 resultsDialog.show();
             }
-        }, 4500);
+        }, 3500);
 
         handler.postDelayed(new Runnable() {
             @Override
@@ -355,7 +328,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 switchDialog.show();
                 flipSwitch();
             }
-        }, 8000);
+        }, 6000);
 
     }
 
@@ -380,7 +353,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 pageSlokaSwitch.setChecked(false);
                 setResultView();
             }
-        }, 3000);
+        }, 2000);
 
         handler.postDelayed(new Runnable() {
             @Override
@@ -389,7 +362,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 switchDialog.dismiss();
                 Toast.makeText(getApplicationContext(), "Demo Complete!", Toast.LENGTH_LONG).show();
             }
-        }, 5000);
+        }, 3000);
     }
 
     private String getColoredSpanned(String text, String color) {
@@ -401,12 +374,12 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
 
         String complete = getColoredSpanned("To complete reading", "#FFCC33");
         // 303F9F
-        String book = getColoredSpanned(String.format(" %s", books.get(curBookPos)), "#951B1B");
+        String book = getColoredSpanned(String.format(" %s", books.get(curBookPos)), "#FFCC33");
         tvBook.setText(Html.fromHtml(book));
 
-        String in = getColoredSpanned("in", "#FFCC33");
-        String duration = getColoredSpanned(String.format(" %d %s", currentCountPos + 1, getDurationByPos()), "#951B1B");
-        String pleaseRead = getColoredSpanned("please read", "#FFCC33");
+        String in = getColoredSpanned("in", "#FFFFFF");
+        String duration = getColoredSpanned(String.format(" %d %s", currentCountPos + 1, getDurationByPos()), "#FFCC33");
+        String pleaseRead = getColoredSpanned("please read", "#FFFFFF");
         tvDuration.setText(Html.fromHtml(in + " " + duration + " " + pleaseRead));
 
         int sbPages = 15119;
