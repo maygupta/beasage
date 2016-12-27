@@ -130,7 +130,6 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     //This functions shows timepicker
     public void showTimePickerDialog(){
 
-        cancelReminder(); // To cancel any previous Reminder
 
         Calendar currentTime = Calendar.getInstance();
         int hour = currentTime.get(Calendar.HOUR_OF_DAY);
@@ -139,6 +138,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         mTimePicker = new TimePickerDialog(Home.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                cancelReminder(); // To cancel any previous Reminder
                 Calendar cal=Calendar.getInstance();
                 cal.set(Calendar.HOUR_OF_DAY,selectedHour);
                 cal.set(Calendar.MINUTE,selectedMinute);
@@ -172,7 +172,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),AlarmManager.INTERVAL_DAY ,pendingIntent);
 
     }
 
