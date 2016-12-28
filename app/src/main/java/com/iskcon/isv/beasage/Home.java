@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
@@ -44,11 +45,15 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     TextView tvDuration;
     TextView tvResult;
     TextView pageOrSloka;
+    TextView tvReminder;
+
     public static final String EXTRA_CURR_BOOK_POS="extra_curBookPos";
     public static final String EXTRA_CURRENT_DURATION_POS="extra_currentDurationPos";
     public static final String EXTRA_CURRENT_COUNT_POS="extra_currentCountPos";
     public static final String EXTRA_PAGES_SLOKA="extra_pages_sloka";
-
+    public static final String MyPREFERENCES = "besage_Prefs" ;
+    public static final String PREF_IS_REMINDER_SET = "nameKey";
+    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +63,8 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         tvDuration = (TextView) findViewById(R.id.tvDuration);
         tvResult= (TextView) findViewById(R.id.tvResult);
         pageOrSloka = (TextView) findViewById(R.id.pageOrSloka);
-
+        tvReminder=(TextView)findViewById(R.id.tvReminder);
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         books = new ArrayList<>();
         books.add("Bhagavad Gita");
@@ -105,6 +111,26 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         });
 
         readDataFromIntent(getIntent());
+
+        if(sharedpreferences!=null){
+            if(sharedpreferences.getBoolean(PREF_IS_REMINDER_SET,false)){
+                tvReminder.setText("Cancel Reminder");
+                tvReminder.setTag(true);
+            }else{
+                tvReminder.setTag(false);
+            }
+        }
+
+        tvReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if((boolean)view.getTag()==true){
+                    cancelReminder();
+                }else{
+                    handleReminder();
+                }
+            }
+        });
     }
 
     @Override
@@ -123,14 +149,12 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         setResultView();
     }
 
-    public void handleReminder(View tvReminder) {
+    public void handleReminder() {
         showTimePickerDialog();
     }
 
     //This functions shows timepicker
     public void showTimePickerDialog(){
-
-
         Calendar currentTime = Calendar.getInstance();
         int hour = currentTime.get(Calendar.HOUR_OF_DAY);
         int minute = currentTime.get(Calendar.MINUTE);
@@ -174,6 +198,13 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),AlarmManager.INTERVAL_DAY ,pendingIntent);
 
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putBoolean(PREF_IS_REMINDER_SET,true);
+        editor.commit();
+
+        tvReminder.setText("Cancel Reminder");
+        tvReminder.setTag(true);
+
     }
 
     public void cancelReminder(){
@@ -182,6 +213,13 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
+
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putBoolean(PREF_IS_REMINDER_SET,false);
+        editor.commit();
+
+        tvReminder.setText("Set Reminder");
+        tvReminder.setTag(false);
     }
 
     public void readDataFromIntent(Intent intent){
