@@ -5,15 +5,18 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -24,6 +27,7 @@ import com.aigestudio.wheelpicker.WheelPicker;
 import com.michael.easydialog.EasyDialog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -125,7 +129,26 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             @Override
             public void onClick(View view) {
                 if((boolean)view.getTag()==true){
-                    cancelReminder();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Home.this);
+                    builder.setMessage("Do you want to remove current reminder?")
+                            .setTitle("Cancel Reminder");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            cancelReminder();
+                        }
+                    });
+
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
                 }else{
                     handleReminder();
                 }
@@ -175,13 +198,14 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     }
 
     public void setReminder(Calendar cal){
-        String contextText="To complete reading "+tvBook.getText().toString()+" "+tvDuration.getText().toString()+" "+tvResult.getText().toString()+" "+pageOrSloka.getText().toString();
+        String contextText="To complete reading "+tvBook.getText().toString()+" "+tvDuration.getText().toString()+" please read " +tvResult.getText().toString()+" "+pageOrSloka.getText().toString();
         NotificationCompat.Builder builder =
             new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.circle_background)
+                .setSmallIcon(R.drawable.ic_stat_text)
                 .setContentTitle("Reminder")
                 .setContentText(contextText)
                 .setAutoCancel(true)
+                    .setColor(getResources().getColor(R.color.app))
                 .setDefaults(Notification.DEFAULT_ALL) // requires VIBRATE permission
                 .setStyle(new NotificationCompat.BigTextStyle()
                     .bigText(contextText));
@@ -196,7 +220,10 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),AlarmManager.INTERVAL_DAY ,pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                cal.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY ,
+                pendingIntent);
 
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putBoolean(PREF_IS_REMINDER_SET,true);
@@ -239,7 +266,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     }
 
     public void handleOpenBbta(View tvBbta) {
-        String url = "http://bbtacademic.com/?product_cat=0&s=&post_type=product";
+        String url = "http://bbtacademic.com/product-tag/beasage_app/";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
@@ -377,7 +404,6 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             @Override
             public void run() {
                 // Do something after 5s = 5000ms
-
                 pageSlokaSwitch.setChecked(true);
                 setResultView();
             }
@@ -387,7 +413,6 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             @Override
             public void run() {
                 // Do something after 5s = 5000ms
-                wheelPicker3.setSelectedItemPosition(0);
                 pageSlokaSwitch.setChecked(false);
                 setResultView();
             }
@@ -411,14 +436,19 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     private void setResultView() {
 
         String complete = getColoredSpanned("To complete reading", "#FFCC33");
+        List<String> vedabaseIds = Arrays.asList("bg", "sb", "cc", "kb", "iso", "nod", "noi", "tlc");
         // 303F9F
-        String book = getColoredSpanned(String.format(" %s", books.get(curBookPos)), "#FFCC33");
-        tvBook.setText(Html.fromHtml(book));
+//        String book = String.format("<a href=\"http://vedabase.com/%s\">%s</a>",
+//                vedabaseIds.get(curBookPos), books.get(curBookPos));
+        tvBook.setText(Html.fromHtml("<a href=\""+ "http://vedabase.com/" + vedabaseIds.get(curBookPos) + "\">" + books.get(curBookPos) + "</a>"));
+
+//        tvBook.setText(Html.fromHtml(book));
+        tvBook.setClickable(true);
+        tvBook.setMovementMethod (LinkMovementMethod.getInstance());
 
         String in = getColoredSpanned("in", "#FFFFFF");
-        String duration = getColoredSpanned(String.format(" %d %s", currentCountPos + 1, getDurationByPos()), "#FFCC33");
-        String pleaseRead = getColoredSpanned("please read", "#FFFFFF");
-        tvDuration.setText(Html.fromHtml(in + " " + duration + " " + pleaseRead));
+        String duration = getColoredSpanned(String.format(" %d %s", currentCountPos + 1, getDurationByPos()), "#a10707");
+        tvDuration.setText(Html.fromHtml(in + " " + duration));
 
         int sbPages = 15119;
         int bgPages = 868;
@@ -436,6 +466,8 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         int niSlokas = 11;
         int tlSlokas = 0;
         int isSlokas = 19;
+
+
 
         if(isPage) {
             int selScripturePages = 0;
