@@ -8,8 +8,8 @@ android {
         applicationId "com.iskcon.isv.beasage"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 3
-        versionName "1.0"
+        versionCode 9
+        versionName "1.1.0"
     }
     buildTypes {
         release {

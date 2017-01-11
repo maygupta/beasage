@@ -37,7 +37,8 @@
         android:paddingLeft="20dp"
         android:paddingBottom="40dp"
         android:text="Be a Sage"
-        android:textColor="@color/script"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/black_lighter"
         android:textSize="35dp"
 
         android:layout_alignParentStart="true"
@@ -87,12 +88,12 @@
             aigestudio:wheel_curved="true"
             aigestudio:wheel_cyclic="true"
             aigestudio:wheel_item_align="right"
-            aigestudio:wheel_item_text_color="#FFF"
-            aigestudio:wheel_item_text_size="20sp"
+            aigestudio:wheel_item_text_color="@color/black_light"
+            aigestudio:wheel_item_text_size="20dp"
             aigestudio:wheel_visible_item_count="4"
             aigestudio:wheel_indicator="true"
-            aigestudio:wheel_indicator_color="@color/script"
-            aigestudio:wheel_selected_item_text_color="@color/script"
+            aigestudio:wheel_indicator_color="@color/black_lightest"
+            aigestudio:wheel_selected_item_text_color="@color/black_light"
             android:layout_alignBottom="@+id/main_wheel_right"
             android:layout_marginLeft="20dp" />
 
@@ -107,10 +108,10 @@
             aigestudio:wheel_cyclic="true"
             aigestudio:wheel_visible_item_count="4"
             aigestudio:wheel_indicator="true"
-            aigestudio:wheel_item_text_color="#FFF"
-            aigestudio:wheel_item_text_size="20sp"
-            aigestudio:wheel_selected_item_text_color="@color/script"
-            aigestudio:wheel_indicator_color="@color/script"
+            aigestudio:wheel_item_text_color="@color/black_light"
+            aigestudio:wheel_item_text_size="20dp"
+            aigestudio:wheel_selected_item_text_color="@color/black_light"
+            aigestudio:wheel_indicator_color="@color/black_lightest"
             android:layout_gravity="center"
             android:layout_alignBottom="@+id/main_wheel_left"
             android:layout_toRightOf="@+id/main_wheel_left"
@@ -127,10 +128,10 @@
             aigestudio:wheel_indicator="true"
             aigestudio:wheel_cyclic="false"
             aigestudio:wheel_item_align="left"
-            aigestudio:wheel_item_text_color="#FFF"
-            aigestudio:wheel_item_text_size="24sp"
-            aigestudio:wheel_selected_item_text_color="@color/script"
-            aigestudio:wheel_indicator_color="@color/script"
+            aigestudio:wheel_item_text_color="@color/black_light"
+            aigestudio:wheel_item_text_size="24dp"
+            aigestudio:wheel_selected_item_text_color="@color/black_light"
+            aigestudio:wheel_indicator_color="@color/black_lightest"
             android:layout_toRightOf="@+id/main_wheel_center"
             android:layout_toEndOf="@+id/main_wheel_center"
             android:layout_gravity="right|center_vertical" />
@@ -142,18 +143,38 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"        android:id="@+id/tvBook"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/tvBook"
         android:layout_below="@+id/tvComplete"
+        android:textSize="16dp"
+        android:layout_centerHorizontal="true"
+        android:textColorLink="@color/colorPrimaryDark"
+        android:textColorHighlight="@color/orange"
+        android:textStyle="bold"
+         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/tvDuration"
+        android:textSize="16dp"
+        android:textColorLink="@color/brown"
+        android:layout_below="@+id/tvBook"
         android:layout_centerHorizontal="true"
          />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"        android:id="@+id/tvDuration"
-        android:layout_below="@+id/tvBook"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/tvPleaseRead"
+        android:text="please read"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        android:layout_below="@+id/tvDuration"
         android:layout_centerHorizontal="true"
-         />
+        />
 
 
     <ImageView
@@ -161,11 +182,9 @@
         android:layout_height="120dp"
         android:id="@+id/ivCircle"
         android:src="@drawable/circle_background"
-        android:layout_alignLeft="@+id/tvDuration"
-        android:layout_alignStart="@+id/tvDuration"
-        android:layout_below="@+id/tvDuration"
-        android:layout_alignRight="@+id/tvDuration"
-        android:layout_alignEnd="@+id/tvDuration"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tvPleaseRead"
+
          />
 
     <TextView
@@ -189,6 +208,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="pages"
         android:id="@+id/pageOrSloka"
+        android:textSize="16dp"
         android:textColor="@color/white"
         android:layout_below="@+id/ivCircle"
         android:layout_centerHorizontal="true"
@@ -208,8 +228,9 @@
         android:layout_below="@+id/pageOrSloka"
         android:layout_toLeftOf="@+id/switch1"
         android:text="Pages"
+        android:textSize="16dp"
         android:layout_alignTop="@+id/switch1"
-        android:textAppearance="?android:attr/textAppearanceSmall"        android:textColor="@color/white"
+        android:textColor="@color/white"
         />
 
     <TextView
@@ -217,32 +238,36 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/pageOrSloka"
         android:layout_toRightOf="@+id/switch1"
-        android:textAppearance="?android:attr/textAppearanceSmall"        android:layout_alignTop="@+id/switch1"
+        android:layout_alignTop="@+id/switch1"
         android:text="Slokas"
+        android:textSize="16dp"
         android:textColor="@color/white"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"        android:text="View Demo"
+        android:text="View Demo"
         android:onClick="handleViewDemo"
+        android:background="@drawable/button_effect"
         android:id="@+id/tvDemo"
+        android:textSize="15dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
+        android:textColor="@color/script"
         android:layout_marginBottom="5dp"
          />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Order Books"
         android:id="@+id/tvBBTA"
         android:onClick="handleOpenBbta"
+        android:textSize="15dp"
+        android:background="@drawable/button_effect"
         android:layout_alignParentBottom="true"
-        android:textColor="@color/white"
+        android:textColor="@color/script"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
         />
@@ -250,10 +275,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"        android:text="Set Reminder"
+        android:text="Set Reminder"
         android:id="@+id/tvReminder"
+        android:background="@drawable/button_effect"
+        android:textSize="15dp"
         android:layout_alignParentBottom="true"
-        android:textColor="@color/white"
+        android:textColor="@color/script"
         android:layout_marginBottom="5dp"
         android:layout_marginRight="10dp"
         android:layout_alignParentRight="true"
@@ -263,8 +290,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"        android:id="@+id/tvComplete"
-        android:text="To complete"
+        android:text="To complete reading"
         android:layout_marginTop="20dp"
+        android:textSize="16dp"
         android:textColor="@color/white"
         android:layout_below="@+id/spinner"
         android:layout_centerHorizontal="true"/>
