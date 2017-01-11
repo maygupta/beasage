@@ -12,6 +12,7 @@
     <color name="black">#000</color>
     <color name="black_light">#e3232323</color>
     <color name="black_lightest">#2a1e1e1e</color>
+    <color name="black_lighter">#a31e1e1e</color>
     <color name="grey">#FFB1AEAE</color>
     <color name="brown">#5c0f02</color>
     <color name="background_color_black">#bb000000</color>

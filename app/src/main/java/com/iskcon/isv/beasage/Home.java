@@ -49,6 +49,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     TextView tvDuration;
     TextView tvResult;
     TextView pageOrSloka;
+    boolean isDemoStarted = false;
     TextView tvReminder;
 
     public static final String EXTRA_CURR_BOOK_POS="extra_curBookPos";
@@ -279,6 +280,10 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     }
 
     public void handleViewDemo(View tvDemo) {
+        if(isDemoStarted) {
+            return;
+        }
+        isDemoStarted = true;
 
         View view = this.getLayoutInflater().inflate(R.layout.layout_tip_content_horizontal, null);
         bookDialog = new EasyDialog(Home.this)
@@ -423,6 +428,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             public void run() {
                 // Do something after 5s = 5000ms
                 switchDialog.dismiss();
+                isDemoStarted = false;
                 Toast.makeText(getApplicationContext(), "Demo Complete!", Toast.LENGTH_LONG).show();
             }
         }, 3000);
@@ -503,16 +509,16 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             double numPagesDay = 0;
             switch (currentDurationPos) {
                 case 0:
-                    numPagesDay = selScripturePages  / (currentCountPos + 1);
+                    numPagesDay = selScripturePages  / (1.0 * (currentCountPos + 1));
                     break;
                 case 1:
-                    numPagesDay = selScripturePages  / (7 * (currentCountPos + 1));
+                    numPagesDay = selScripturePages  / (7.0 * (currentCountPos + 1));
                     break;
                 case 2:
-                    numPagesDay = selScripturePages / (30 * (currentCountPos + 1));
+                    numPagesDay = selScripturePages / (30.0 * (currentCountPos + 1));
                     break;
                 case 3:
-                    numPagesDay = selScripturePages / (365 * (currentCountPos + 1));
+                    numPagesDay = selScripturePages / (365.0 * (currentCountPos + 1));
                     break;
             }
 
@@ -520,7 +526,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 numPagesDay = 1;
             }
             numPagesDay = Math.ceil(numPagesDay);
-            tvResult.setText(String.format("%d", Math.round(numPagesDay)));
+            tvResult.setText(String.format("%d", (int) numPagesDay));
             pageOrSloka.setText("pages per day");
         } else {
             int selScriptureSlokas = 0;
@@ -556,16 +562,16 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             double numSlokasDay = 0.0;
             switch (currentDurationPos) {
                 case 0:
-                    numSlokasDay = selScriptureSlokas / (currentCountPos + 1);
+                    numSlokasDay = selScriptureSlokas / (1.0 * (currentCountPos + 1));
                     break;
                 case 1:
-                    numSlokasDay = selScriptureSlokas / (7 * (currentCountPos + 1));
+                    numSlokasDay = selScriptureSlokas / (7.0 * (currentCountPos + 1));
                     break;
                 case 2:
-                    numSlokasDay = selScriptureSlokas / (30 * (currentCountPos + 1));
+                    numSlokasDay = selScriptureSlokas / (30.0 * (currentCountPos + 1));
                     break;
                 case 3:
-                    numSlokasDay = selScriptureSlokas / (365 * (currentCountPos + 1));
+                    numSlokasDay = selScriptureSlokas / (365.0 * (currentCountPos + 1));
                     break;
             }
 
@@ -575,7 +581,8 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 if(numSlokasDay < 1) {
                     numSlokasDay = 1;
                 }
-                tvResult.setText(String.format("%d", Math.round(numSlokasDay)));
+                numSlokasDay = Math.ceil(numSlokasDay);
+                tvResult.setText(String.format("%d", (int) numSlokasDay));
             }
             pageOrSloka.setText("slokas per day");
         }
