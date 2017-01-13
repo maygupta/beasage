@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -29,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -70,6 +72,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             "com.iskcon.isv.beasage.HomeFragment",
             "com.iskcon.isv.beasage.HistoryFragment",
             };
+
 
     public static final String EXTRA_CURR_BOOK_POS="extra_curBookPos";
     public static final String EXTRA_CURRENT_DURATION_POS="extra_currentDurationPos";
@@ -196,6 +199,27 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
 
         ImageView ivProfile = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.ivProfile);
         Picasso.with(this).load(Uri.parse("https://scontent.fdel1-2.fna.fbcdn.net/v/t31.0-8/15403805_1490186217661592_4038357407267138198_o.jpg?oh=e2fd0ea73d8db11216940f2422b2071e&oe=591DB965")).into(ivProfile);
+
+        ListView listView = (ListView) findViewById(R.id.lvHistory);
+        ArrayList<History> data = new ArrayList<History>();
+        data.add(new History("01-14-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
+        data.add(new History("01-13-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
+        data.add(new History("01-12-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
+        data.add(new History("01-11-2017", "Srimad Bhagavatam", 22, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
+        data.add(new History("01-10-2017", "Bhagavad Gita", 15, true, "http://www.satshree.org/wp-content/uploads/2015/08/Krishna_Arjuna.jpg"));
+        data.add(new History("01-09-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
+        data.add(new History("01-08-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
+        data.add(new History("01-07-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
+
+        HistoryAdapter adapter = new HistoryAdapter(this, data);
+        listView.setAdapter(adapter);
+
+        FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);
+        myFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 

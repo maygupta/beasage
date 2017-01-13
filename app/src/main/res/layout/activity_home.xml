@@ -72,6 +72,28 @@
             android:textColor="#fff"
             android:textSize="25dp" />
 
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_below="@id/myImageViewText1"
+            android:layout_height="wrap_content"
+            android:id="@+id/lvHistory"
+            >
+        </ListView>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:backgroundTint="@color/orange"
+            android:layout_alignParentRight="true"
+
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:src="@drawable/messenger_bubble_small_white"
+            />
+
     </RelativeLayout>
 
 
