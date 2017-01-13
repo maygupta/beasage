@@ -221,6 +221,11 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             }
         });
 
+
+    }
+
+    public void addNewRecord(View v) {
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
