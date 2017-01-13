@@ -1,6 +1,7 @@
 package com.iskcon.isv.beasage;
 
 import android.app.AlarmManager;
+import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
@@ -214,18 +215,12 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         HistoryAdapter adapter = new HistoryAdapter(this, data);
         listView.setAdapter(adapter);
 
-        FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);
-        myFab.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-            }
-        });
-
-
     }
 
     public void addNewRecord(View v) {
-
+        FragmentManager manager = getFragmentManager();
+        ItemFragment fragment = new ItemFragment();
+        fragment.show(manager, "Item Dialog");
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

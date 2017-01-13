@@ -13,4 +13,13 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="books">
+        <item>Srimad Bhagavatam</item>
+        <item>Bhagavad Gita</item>
+        <item>Caitanya Caritamrta</item>
+        <item>Nectar of Instruction</item>
+        <item>Nectar of Devotion</item>
+        <item>TLC</item>
+    </string-array>
 </resources>

@@ -2,19 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="History" />
+
         <item
             android:id="@+id/nav_find"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Find Pages" />
 
         <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Reading Stats" />
+
+        <item
             android:id="@+id/nav_send"
             android:icon="@drawable/ic_menu_send"
-            android:title="Visualize (In Progress)" />
+            android:title="Visual Stats (In Progress)" />
 
         <item
             android:id="@+id/nav_manage"
