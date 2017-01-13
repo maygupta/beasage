@@ -23,54 +23,54 @@
         android:background="@color/app"
         tools:context="com.iskcon.isv.beasage.Home">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/app_logo"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/app_logo"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
 
-            android:layout_alignParentEnd="true"
-            android:id="@+id/logo1"
-            android:layout_marginBottom="450dp" />
+        android:layout_alignParentEnd="true"
+        android:id="@+id/logo1"
+        android:layout_marginBottom="450dp" />
 
-        <TextView
-            android:id="@+id/myImageViewText1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/logo1"
-            android:layout_alignTop="@id/logo1"
-            android:layout_alignRight="@id/logo1"
-            android:layout_alignBottom="@id/logo1"
-            android:layout_margin="1dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="20dp"
-            android:paddingBottom="40dp"
-            android:text="Be a Sage"
-            android:fontFamily="sans-serif-light"
-            android:textColor="@color/black_lighter"
-            android:textSize="35dp"
+    <TextView
+        android:id="@+id/myImageViewText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/logo1"
+        android:layout_alignTop="@id/logo1"
+        android:layout_alignRight="@id/logo1"
+        android:layout_alignBottom="@id/logo1"
+        android:layout_margin="1dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingBottom="40dp"
+        android:text="Be a Sage"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/black_lighter"
+        android:textSize="35dp"
 
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true" />
 
-        <TextView
-            android:id="@+id/pageText1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/logo1"
-            android:layout_alignTop="@id/logo1"
-            android:layout_alignRight="@id/logo1"
-            android:layout_alignBottom="@id/logo1"
-            android:layout_margin="1dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="20dp"
-            android:paddingTop="30dp"
-            android:text="Page by Page"
-            android:textColor="#fff"
-            android:textSize="25dp" />
+    <TextView
+        android:id="@+id/pageText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/logo1"
+        android:layout_alignTop="@id/logo1"
+        android:layout_alignRight="@id/logo1"
+        android:layout_alignBottom="@id/logo1"
+        android:layout_margin="1dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingTop="30dp"
+        android:text="Page by Page"
+        android:textColor="#fff"
+        android:textSize="25dp" />
 
     </RelativeLayout>
 
