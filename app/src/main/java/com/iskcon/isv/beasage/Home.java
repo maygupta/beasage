@@ -41,6 +41,7 @@ import android.widget.Toast;
 
 import com.aigestudio.wheelpicker.WheelPicker;
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -86,6 +87,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
 
     CallbackManager callbackManager;
     ImageView ivProfile;
+    AccessTokenTracker accessTokenTracker;
 
     public static final String EXTRA_CURR_BOOK_POS="extra_curBookPos";
     public static final String EXTRA_CURRENT_DURATION_POS="extra_currentDurationPos";
@@ -211,12 +213,18 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         navigationView.setNavigationItemSelectedListener(this);
 
         ivProfile = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.ivProfile);
-        ivProfile.setVisibility(View.INVISIBLE);
+
 
         if(AccessToken.getCurrentAccessToken() != null) {
             navigationView.getHeaderView(0).findViewById(R.id.logged_in).setVisibility(View.VISIBLE);
             Picasso.with(getApplicationContext()).load(Uri.parse("https://scontent.fdel1-2.fna.fbcdn.net/v/t31.0-8/15403805_1490186217661592_4038357407267138198_o.jpg?oh=e2fd0ea73d8db11216940f2422b2071e&oe=591DB965")).into(ivProfile);
             ivProfile.setVisibility(View.VISIBLE);
+        } else {
+            ivProfile.setVisibility(View.INVISIBLE);
+            navigationView.getHeaderView(0).findViewById(R.id.tvEmail).setVisibility(View.INVISIBLE);
+            navigationView.getHeaderView(0).findViewById(R.id.tvFirstName).setVisibility(View.INVISIBLE);
+            navigationView.getMenu().findItem(R.id.nav_gallery).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_send).setVisible(false);
         }
 
         ListView listView = (ListView) findViewById(R.id.lvHistory);
@@ -239,10 +247,14 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                navigationView.getHeaderView(0).findViewById(R.id.login).setVisibility(View.INVISIBLE);
+                //navigationView.getHeaderView(0).findViewById(R.id.login).setVisibility(View.INVISIBLE);
                 navigationView.getHeaderView(0).findViewById(R.id.logged_in).setVisibility(View.VISIBLE);
                 Picasso.with(getApplicationContext()).load(Uri.parse("https://scontent.fdel1-2.fna.fbcdn.net/v/t31.0-8/15403805_1490186217661592_4038357407267138198_o.jpg?oh=e2fd0ea73d8db11216940f2422b2071e&oe=591DB965")).into(ivProfile);
                 ivProfile.setVisibility(View.VISIBLE);
+                navigationView.getHeaderView(0).findViewById(R.id.tvEmail).setVisibility(View.VISIBLE);
+                navigationView.getHeaderView(0).findViewById(R.id.tvFirstName).setVisibility(View.VISIBLE);
+                navigationView.getMenu().findItem(R.id.nav_gallery).setVisible(true);
+                navigationView.getMenu().findItem(R.id.nav_send).setVisible(true);
             }
 
             @Override
@@ -255,6 +267,20 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
             }
         });
+
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken,
+                                                       AccessToken currentAccessToken) {
+                if (currentAccessToken == null) {
+                    ivProfile.setVisibility(View.INVISIBLE);
+                    navigationView.getHeaderView(0).findViewById(R.id.tvEmail).setVisibility(View.INVISIBLE);
+                    navigationView.getHeaderView(0).findViewById(R.id.tvFirstName).setVisibility(View.INVISIBLE);
+                    navigationView.getMenu().findItem(R.id.nav_gallery).setVisible(false);
+                    navigationView.getMenu().findItem(R.id.nav_send).setVisible(false);
+                }
+            }
+        };
 
     }
 
