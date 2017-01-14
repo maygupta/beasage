@@ -84,7 +84,7 @@
             android:gravity="center_vertical"
             android:text="Page by Page"
             android:textColor="#fff"
-            android:paddingLeft="40dp"
+            android:paddingLeft="45dp"
             android:paddingTop="30dp"
             android:textSize="20dp" />
 
@@ -181,7 +181,7 @@
             android:layout_alignBottom="@id/logo"
             android:layout_margin="1dp"
             android:gravity="center_vertical"
-            android:paddingLeft="40dp"
+            android:paddingLeft="45dp"
             android:paddingTop="30dp"
             android:text="Page by Page"
             android:textColor="#fff"

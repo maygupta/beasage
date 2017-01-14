@@ -23,6 +23,7 @@
         android:layout_toRightOf="@+id/ivAuthorImage"
         android:maxWidth="200dp"
         android:ellipsize="end"
+        android:textSize="14dp"
         android:textColor="@color/white"
         android:maxLines="1"
         />
@@ -32,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:layout_alignLeft="@+id/song_name"
         android:layout_below="@+id/song_name"
         />
@@ -43,7 +44,7 @@
         android:textColor="@color/script"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
 

@@ -27,10 +27,12 @@ import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,8 +40,16 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.aigestudio.wheelpicker.WheelPicker;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.michael.easydialog.EasyDialog;
 import com.squareup.picasso.Picasso;
 
@@ -74,6 +84,8 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
             "com.iskcon.isv.beasage.HistoryFragment",
             };
 
+    CallbackManager callbackManager;
+    ImageView ivProfile;
 
     public static final String EXTRA_CURR_BOOK_POS="extra_curBookPos";
     public static final String EXTRA_CURRENT_DURATION_POS="extra_currentDurationPos";
@@ -195,19 +207,25 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
 
         AppEventsLogger.activateApp(this);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ImageView ivProfile = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.ivProfile);
-        Picasso.with(this).load(Uri.parse("https://scontent.fdel1-2.fna.fbcdn.net/v/t31.0-8/15403805_1490186217661592_4038357407267138198_o.jpg?oh=e2fd0ea73d8db11216940f2422b2071e&oe=591DB965")).into(ivProfile);
+        ivProfile = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.ivProfile);
+        ivProfile.setVisibility(View.INVISIBLE);
+
+        if(AccessToken.getCurrentAccessToken() != null) {
+            navigationView.getHeaderView(0).findViewById(R.id.logged_in).setVisibility(View.VISIBLE);
+            Picasso.with(getApplicationContext()).load(Uri.parse("https://scontent.fdel1-2.fna.fbcdn.net/v/t31.0-8/15403805_1490186217661592_4038357407267138198_o.jpg?oh=e2fd0ea73d8db11216940f2422b2071e&oe=591DB965")).into(ivProfile);
+            ivProfile.setVisibility(View.VISIBLE);
+        }
 
         ListView listView = (ListView) findViewById(R.id.lvHistory);
         ArrayList<History> data = new ArrayList<History>();
         data.add(new History("01-14-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
         data.add(new History("01-13-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
-        data.add(new History("01-12-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
-        data.add(new History("01-11-2017", "Srimad Bhagavatam", 22, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
-        data.add(new History("01-10-2017", "Bhagavad Gita", 15, true, "http://www.satshree.org/wp-content/uploads/2015/08/Krishna_Arjuna.jpg"));
+        data.add(new History("01-12-2017", "Bhagavad Gita", 15, true, "http://www.satshree.org/wp-content/uploads/2015/08/Krishna_Arjuna.jpg"));
+        data.add(new History("01-11-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
+        data.add(new History("01-10-2017", "Srimad Bhagavatam", 22, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
         data.add(new History("01-09-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
         data.add(new History("01-08-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
         data.add(new History("01-07-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
@@ -215,6 +233,35 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         HistoryAdapter adapter = new HistoryAdapter(this, data);
         listView.setAdapter(adapter);
 
+        callbackManager = CallbackManager.Factory.create();
+        LoginButton loginButton = (LoginButton) navigationView.getHeaderView(0).findViewById(R.id.login_button);
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                navigationView.getHeaderView(0).findViewById(R.id.login).setVisibility(View.INVISIBLE);
+                navigationView.getHeaderView(0).findViewById(R.id.logged_in).setVisibility(View.VISIBLE);
+                Picasso.with(getApplicationContext()).load(Uri.parse("https://scontent.fdel1-2.fna.fbcdn.net/v/t31.0-8/15403805_1490186217661592_4038357407267138198_o.jpg?oh=e2fd0ea73d8db11216940f2422b2071e&oe=591DB965")).into(ivProfile);
+                ivProfile.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     public void addNewRecord(View v) {
