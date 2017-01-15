@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvFirstName"
         android:paddingLeft="10dp"
-        android:text="Gauranga"
+        android:text="Mayank"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
