@@ -8,7 +8,7 @@ android {
         applicationId "com.iskcon.isv.beasage"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 9
+        versionCode 10
         versionName "1.1.0"
     }
     buildTypes {
