@@ -2,10 +2,14 @@ package com.iskcon.isv.beasage;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,17 +48,39 @@ public class TrackerActivity extends AppCompatActivity {
 
         selectedBooks = new HashMap<>();
 
-        Button button = (Button) findViewById(R.id.button);
+        final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.selectedBooksLL);
+
+        Button button = (Button) findViewById(R.id.addButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String item = (String) spinner.getSelectedItem();
-                Integer id = books.getBookByName(item);
-                selectedBooks.put(id, books.getBookById(id));
-                View selectedBookView = new View(getApplicationContext());
+                final Integer id = books.getBookByName(item);
+                BookItem bookItem = books.getBookById(id);
 
-                // TODO: Create Book view and add it to Dynamic Scroll View
-                // Tracked Book Item view is add as tracked_book_item.xml
+                if(selectedBooks.containsKey(id)) {
+                    Toast.makeText(getApplicationContext(), "Book already being tracked", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                selectedBooks.put(id, bookItem);
+
+                LayoutInflater inflater = getLayoutInflater();
+
+                final View view = inflater.inflate(R.layout.tracked_book_item, null);
+                TextView tvBookName = (TextView) view.findViewById(R.id.tvBookName);
+                tvBookName.setText(bookItem.name);
+
+                Button btnRemove = (Button) view.findViewById(R.id.removeBtn);
+                btnRemove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        selectedBooks.remove(id);
+                        linearLayout.removeView(view);
+                    }
+                });
+
+                linearLayout.addView(view);
             }
         });
     }
