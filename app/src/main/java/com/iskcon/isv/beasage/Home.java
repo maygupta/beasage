@@ -1,5 +1,6 @@
 package com.iskcon.isv.beasage;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -267,10 +268,13 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     }
 
     public void handleOpenBbta(View tvBbta) {
-        String url = "http://bbtacademic.com/product-tag/beasage_app/";
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
+//        String url = "http://bbtacademic.com/product-tag/beasage_app/";
+//        Intent i = new Intent(Intent.ACTION_VIEW);
+//        i.setData(Uri.parse(url));
+//        startActivity(i);
+        Intent i = new Intent(this, TrackerActivity.class);
         startActivity(i);
+
     }
 
     @Override
