@@ -1,6 +1,8 @@
 package com.iskcon.isv.beasage;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -8,10 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,6 +61,7 @@ public class TrackerActivity extends AppCompatActivity {
 
         Button button = (Button) findViewById(R.id.addButton);
         button.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 String item = (String) spinner.getSelectedItem();
@@ -91,6 +98,9 @@ public class TrackerActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+
+                ImageView ivBook = (ImageView) view.findViewById(R.id.ivBook);
+//                Picasso.with(getApplicationContext()).load(bookItem.url).into(ivBook);
 
                 linearLayout.addView(view);
             }

@@ -3,10 +3,20 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/ivBook"
+        android:src="@drawable/app_logo"
+        />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
+        android:layout_toRightOf="@+id/ivBook"
+        android:textSize="14dp"
+        android:textColor="@color/white"
         android:id="@+id/tvBookName" />
 
     <Button
@@ -19,13 +29,5 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-
-    <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/pbSelectedBook"
-        android:layout_alignBottom="@+id/removeBtn"
-        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
