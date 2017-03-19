@@ -1,6 +1,7 @@
 package com.iskcon.isv.beasage;
 
 import android.app.AlarmManager;
+import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
@@ -10,28 +11,55 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.aigestudio.wheelpicker.WheelPicker;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.michael.easydialog.EasyDialog;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-public class Home extends AppCompatActivity implements WheelPicker.OnItemSelectedListener {
+public class Home extends AppCompatActivity implements WheelPicker.OnItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
     List<String> books;
     int currentDurationPos = 2;
@@ -51,6 +79,15 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     TextView pageOrSloka;
     boolean isDemoStarted = false;
     TextView tvReminder;
+    final String[] data ={"one","two","three"};
+    final String[] fragments ={
+            "com.iskcon.isv.beasage.HomeFragment",
+            "com.iskcon.isv.beasage.HistoryFragment",
+            };
+
+    CallbackManager callbackManager;
+    ImageView ivProfile;
+    AccessTokenTracker accessTokenTracker;
 
     public static final String EXTRA_CURR_BOOK_POS="extra_curBookPos";
     public static final String EXTRA_CURRENT_DURATION_POS="extra_currentDurationPos";
@@ -63,6 +100,8 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_home);
         tvBook = (TextView) findViewById(R.id.tvBook);
         tvDuration = (TextView) findViewById(R.id.tvDuration);
@@ -155,6 +194,129 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 }
             }
         });
+
+        RelativeLayout rlHistory = (RelativeLayout) findViewById(R.id.history_fragment);
+        rlHistory.setVisibility(View.INVISIBLE);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        AppEventsLogger.activateApp(this);
+
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        ivProfile = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.ivProfile);
+
+
+        if(AccessToken.getCurrentAccessToken() != null) {
+            navigationView.getHeaderView(0).findViewById(R.id.logged_in).setVisibility(View.VISIBLE);
+            Picasso.with(getApplicationContext()).load(Uri.parse("https://scontent.fdel1-2.fna.fbcdn.net/v/t31.0-8/15403805_1490186217661592_4038357407267138198_o.jpg?oh=e2fd0ea73d8db11216940f2422b2071e&oe=591DB965")).into(ivProfile);
+            ivProfile.setVisibility(View.VISIBLE);
+        } else {
+            ivProfile.setVisibility(View.INVISIBLE);
+            navigationView.getHeaderView(0).findViewById(R.id.tvEmail).setVisibility(View.INVISIBLE);
+            navigationView.getHeaderView(0).findViewById(R.id.tvFirstName).setVisibility(View.INVISIBLE);
+            navigationView.getMenu().findItem(R.id.nav_gallery).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_send).setVisible(false);
+        }
+
+        ListView listView = (ListView) findViewById(R.id.lvHistory);
+        ArrayList<History> data = new ArrayList<History>();
+        data.add(new History("01-14-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
+        data.add(new History("01-13-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
+        data.add(new History("01-12-2017", "Bhagavad Gita", 15, true, "http://www.satshree.org/wp-content/uploads/2015/08/Krishna_Arjuna.jpg"));
+        data.add(new History("01-11-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
+        data.add(new History("01-10-2017", "Srimad Bhagavatam", 22, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
+        data.add(new History("01-09-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
+        data.add(new History("01-08-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
+        data.add(new History("01-07-2017", "Srimad Bhagavatam", 21, true, "http://files.krishna.com/en/images/srimadbhag615.jpg"));
+
+        HistoryAdapter adapter = new HistoryAdapter(this, data);
+        listView.setAdapter(adapter);
+
+        callbackManager = CallbackManager.Factory.create();
+        LoginButton loginButton = (LoginButton) navigationView.getHeaderView(0).findViewById(R.id.login_button);
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                //navigationView.getHeaderView(0).findViewById(R.id.login).setVisibility(View.INVISIBLE);
+                navigationView.getHeaderView(0).findViewById(R.id.logged_in).setVisibility(View.VISIBLE);
+                Picasso.with(getApplicationContext()).load(Uri.parse("https://scontent.fdel1-2.fna.fbcdn.net/v/t31.0-8/15403805_1490186217661592_4038357407267138198_o.jpg?oh=e2fd0ea73d8db11216940f2422b2071e&oe=591DB965")).into(ivProfile);
+                ivProfile.setVisibility(View.VISIBLE);
+                navigationView.getHeaderView(0).findViewById(R.id.tvEmail).setVisibility(View.VISIBLE);
+                navigationView.getHeaderView(0).findViewById(R.id.tvFirstName).setVisibility(View.VISIBLE);
+                navigationView.getMenu().findItem(R.id.nav_gallery).setVisible(true);
+                navigationView.getMenu().findItem(R.id.nav_send).setVisible(true);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken,
+                                                       AccessToken currentAccessToken) {
+                if (currentAccessToken == null) {
+                    ivProfile.setVisibility(View.INVISIBLE);
+                    navigationView.getHeaderView(0).findViewById(R.id.tvEmail).setVisibility(View.INVISIBLE);
+                    navigationView.getHeaderView(0).findViewById(R.id.tvFirstName).setVisibility(View.INVISIBLE);
+                    navigationView.getMenu().findItem(R.id.nav_gallery).setVisible(false);
+                    navigationView.getMenu().findItem(R.id.nav_send).setVisible(false);
+                }
+            }
+        };
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void addNewRecord(View v) {
+        FragmentManager manager = getFragmentManager();
+        ItemFragment fragment = new ItemFragment();
+        fragment.show(manager, "Item Dialog");
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_find) {
+            findViewById(R.id.home_fragment).setVisibility(View.VISIBLE);
+            findViewById(R.id.history_fragment).setVisibility(View.INVISIBLE);
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        } else if (id == R.id.nav_gallery) {
+            findViewById(R.id.home_fragment).setVisibility(View.INVISIBLE);
+            findViewById(R.id.history_fragment).setVisibility(View.VISIBLE);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
@@ -179,23 +341,27 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
 
     //This functions shows timepicker
     public void showTimePickerDialog(){
-        Calendar currentTime = Calendar.getInstance();
-        int hour = currentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = currentTime.get(Calendar.MINUTE);
-        TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(Home.this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                cancelReminder(); // To cancel any previous Reminder
-                Calendar cal=Calendar.getInstance();
-                cal.set(Calendar.HOUR_OF_DAY,selectedHour);
-                cal.set(Calendar.MINUTE,selectedMinute);
-                Toast.makeText(Home.this,"Reminder set at "+selectedHour+":"+selectedMinute +" to read "+tvBook.getText().toString() + " daily",Toast.LENGTH_LONG).show();
-                setReminder(cal);
-            }
-        }, hour, minute, true);//Yes 24 hour time
-        mTimePicker.setTitle("Select Reminder Time");
-        mTimePicker.show();
+//        Intent intentForFullDarshan = new Intent(this, MainActivity.class);
+//        startActivity(intentForFullDarshan);
+
+
+//        Calendar currentTime = Calendar.getInstance();
+//        int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+//        int minute = currentTime.get(Calendar.MINUTE);
+//        TimePickerDialog mTimePicker;
+//        mTimePicker = new TimePickerDialog(Home.this, new TimePickerDialog.OnTimeSetListener() {
+//            @Override
+//            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+//                cancelReminder(); // To cancel any previous Reminder
+//                Calendar cal=Calendar.getInstance();
+//                cal.set(Calendar.HOUR_OF_DAY,selectedHour);
+//                cal.set(Calendar.MINUTE,selectedMinute);
+//                Toast.makeText(Home.this,"Reminder set at "+selectedHour+":"+selectedMinute +" to read "+tvBook.getText().toString() + " daily",Toast.LENGTH_LONG).show();
+//                setReminder(cal);
+//            }
+//        }, hour, minute, true);//Yes 24 hour time
+//        mTimePicker.setTitle("Select Reminder Time");
+//        mTimePicker.show();
     }
 
     public void setReminder(Calendar cal){

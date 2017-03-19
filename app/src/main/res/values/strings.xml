@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">Be A Sage</string>
+    <string name="title_activity_main">Be A Sage</string>
+    <string name="facebook_app_id">1854843524734069</string>
+
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="fb_login_protocol_scheme">fb1854843524734069</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="books">
+        <item>Srimad Bhagavatam</item>
+        <item>Bhagavad Gita</item>
+        <item>Caitanya Caritamrta</item>
+        <item>Nectar of Instruction</item>
+        <item>Nectar of Devotion</item>
+        <item>TLC</item>
+    </string-array>
 </resources>

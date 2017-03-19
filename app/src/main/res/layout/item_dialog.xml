@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+
+    <TextView
+        android:layout_width="106dp"
+        android:layout_height="wrap_content"
+        android:text="Book Read"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:textStyle="bold"
+        />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/add_todo_priority"
+        android:entries="@array/books"
+        />
+
+
+    <TextView
+        android:layout_width="106dp"
+        android:layout_height="wrap_content"
+        android:text="Read on"
+        android:layout_marginLeft="10dp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp" />
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_todo_due_date"
+        android:layout_marginLeft="10dp"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number of Pages Read"
+        android:layout_weight="0.05"
+        android:layout_marginLeft="10dp"
+        android:textStyle="bold" />
+    <EditText
+        android:id="@+id/add_todo_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        >
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancel"
+            android:text="Cancel"
+            android:textSize="8sp"
+            android:layout_alignParentRight="true"
+            android:background="#00ffffff" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/delete"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            android:text="Delete"
+            android:textSize="8sp"
+            android:background="#00ffffff" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/save"
+            android:text="Save"
+            android:textSize="8sp"
+            android:layout_alignParentLeft="true"
+            android:background="#00ffffff" />
+    </RelativeLayout>
+
+
+
+</LinearLayout>
