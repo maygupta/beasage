@@ -32,7 +32,7 @@ public class TrackerActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        getSupportActionBar().setTitle(null);
+        getSupportActionBar().setTitle("Book Tracker");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
