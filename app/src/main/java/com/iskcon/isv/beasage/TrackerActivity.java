@@ -1,5 +1,6 @@
 package com.iskcon.isv.beasage;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +18,6 @@ import java.util.List;
 
 public class TrackerActivity extends AppCompatActivity {
 
-    List<BookItem> items;
     Books books;
     HashMap<Integer, BookItem> selectedBooks;
 
@@ -26,18 +26,7 @@ public class TrackerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracker);
 
-        items = new ArrayList<>();
-        items.add(new BookItem("Bhagavad Gita", 717, 700));
-        items.add(new BookItem("Srimad Bhagavatam", 14625, 14094));
-        items.add(new BookItem("Caitanya Caritamrta", 6624, 11555));
-        items.add(new BookItem("Krsna Book", 796, 0));
-        items.add(new BookItem("Sri Isopanishad", 138, 19));
-        items.add(new BookItem("Nectar of Devotion", 399, 0));
-        items.add(new BookItem("Nectar of Instruction", 91, 11));
-        items.add(new BookItem("TLC", 350, 0));
-
-        books = new Books();
-        books.setBooks(items);
+        books = Books.getBooksInstance();
 
         final Spinner spinner =(Spinner) findViewById(R.id.spinner2);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -65,7 +54,7 @@ public class TrackerActivity extends AppCompatActivity {
 
                 selectedBooks.put(id, bookItem);
 
-                LayoutInflater inflater = getLayoutInflater();
+                final LayoutInflater inflater = getLayoutInflater();
 
                 final View view = inflater.inflate(R.layout.tracked_book_item, null);
                 TextView tvBookName = (TextView) view.findViewById(R.id.tvBookName);
@@ -77,6 +66,15 @@ public class TrackerActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         selectedBooks.remove(id);
                         linearLayout.removeView(view);
+                    }
+                });
+
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), BookTrackingActivity.class);
+                        intent.putExtra("id", id);
+                        startActivity(intent);
                     }
                 });
 

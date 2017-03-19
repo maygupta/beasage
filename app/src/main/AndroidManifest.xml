@@ -20,7 +20,8 @@
 
         <receiver android:name=".NotificationPublisher" />
 
-        <activity android:name=".TrackerActivity"></activity>
+        <activity android:name=".TrackerActivity" />
+        <activity android:name=".BookTrackingActivity"></activity>
     </application>
 
 </manifest>
