@@ -6,20 +6,21 @@
 
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="106dp"
         android:layout_height="wrap_content"
-        android:text="Number of Pages Read"
-        android:layout_weight="0.05"
-        android:layout_marginLeft="10dp"
+        android:text="Book Read"
         android:layout_marginTop="10dp"
-        android:textStyle="bold" />
-    <EditText
-        android:id="@+id/add_todo_text"
+        android:layout_marginLeft="10dp"
+        android:textStyle="bold"
+        />
+
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/editbox_background"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginLeft="10dp"
+        android:id="@+id/add_todo_priority"
+        android:entries="@array/books"
+        />
 
 
     <TextView
@@ -28,7 +29,7 @@
         android:text="Read on"
         android:layout_marginLeft="10dp"
         android:textStyle="bold"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="10dp" />
 
     <DatePicker
         android:layout_width="wrap_content"
@@ -39,22 +40,21 @@
         android:datePickerMode="spinner"
         />
 
-    <TextView
-        android:layout_width="106dp"
-        android:layout_height="wrap_content"
-        android:text="Select Book"
-        android:layout_marginLeft="10dp"
-        android:textStyle="bold"
-        />
 
-    <Spinner
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number of Pages Read"
+        android:layout_weight="0.05"
+        android:layout_marginLeft="10dp"
+        android:textStyle="bold" />
+    <EditText
+        android:id="@+id/add_todo_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="20dp"
-        android:id="@+id/add_todo_priority"
-        android:entries="@array/books"
-        />
+        android:background="@android:drawable/editbox_background"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
