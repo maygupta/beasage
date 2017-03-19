@@ -456,14 +456,14 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         String duration = getColoredSpanned(String.format(" %d %s", currentCountPos + 1, getDurationByPos()), "#a10707");
         tvDuration.setText(Html.fromHtml(in + " " + duration));
 
-        int sbPages = 15119;
-        int bgPages = 868;
-        int ccPages = 6621;
-        int krPages = 706;
-        int ndPages = 407;
-        int tlPages = 347;
-        int isPages = 158;
-        int niPages = 130;
+        int sbPages = 14625;
+        int bgPages = 717;
+        int ccPages = 6624;
+        int krPages = 796;
+        int ndPages = 399;
+        int tlPages = 350;
+        int isPages = 138;
+        int niPages = 91;
         int sbSlokas = 14094;
         int bgSlokas = 700;
         int ccSlokas = 11555;
