@@ -3,6 +3,7 @@ package com.iskcon.isv.beasage;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -27,6 +28,19 @@ public class TrackerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tracker);
 
         books = Books.getBooksInstance();
+
+        Toolbar toolbar =(Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        getSupportActionBar().setTitle("Book Tracker");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         final Spinner spinner =(Spinner) findViewById(R.id.spinner2);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
