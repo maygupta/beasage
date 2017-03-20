@@ -3,8 +3,8 @@ package com.iskcon.isv.beasage;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +16,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class TrackerActivity extends AppCompatActivity {
 
@@ -80,13 +80,16 @@ public class TrackerActivity extends AppCompatActivity {
                 final Integer id = books.getBookByName(item);
                 final BookItem bookItem = books.getBookById(id);
 
-                if(selectedBooks.containsKey(id)) {
-                    Toast.makeText(getApplicationContext(), "Book already being tracked", Toast.LENGTH_SHORT).show();
-                    return;
+                try {
+                    beasageDbHelper.open();
+                    if(beasageDbHelper.isBookExists(id)){
+                        Toast.makeText(getApplicationContext(), "Book already being tracked", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    beasageDbHelper.close();
+                }catch (SQLException e){
+
                 }
-
-                selectedBooks.put(id, bookItem);
-
                 final View view = inflater.inflate(R.layout.tracked_book_item, null);
                 TextView tvBookName = (TextView) view.findViewById(R.id.tvBookName);
                 tvBookName.setText(bookItem.name);
@@ -122,7 +125,7 @@ public class TrackerActivity extends AppCompatActivity {
                 });
 
                 ImageView ivBook = (ImageView) view.findViewById(R.id.ivBook);
-//                Picasso.with(getApplicationContext()).load(bookItem.url).into(ivBook);
+                Picasso.with(getApplicationContext()).load(bookItem.url).into(ivBook);
 
                 try {
                     beasageDbHelper.open();
@@ -148,6 +151,8 @@ public class TrackerActivity extends AppCompatActivity {
                 final View view = inflater.inflate(R.layout.tracked_book_item, null);
                 TextView tvBookName = (TextView) view.findViewById(R.id.tvBookName);
                 tvBookName.setText(prevoiusBooks.get(key).name);
+                ImageView ivBook = (ImageView) view.findViewById(R.id.ivBook);
+                Picasso.with(getApplicationContext()).load(prevoiusBooks.get(key).url).into(ivBook);
                 view.setTag(key);
                 linearLayout.addView(view);
 
@@ -169,6 +174,15 @@ public class TrackerActivity extends AppCompatActivity {
                             Toast.makeText(TrackerActivity.this,"Couldn't aremovedd data",Toast.LENGTH_LONG).show();
                         }
 
+                    }
+                });
+
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), BookTrackingActivity.class);
+                        intent.putExtra("id", key);
+                        startActivity(intent);
                     }
                 });
             }

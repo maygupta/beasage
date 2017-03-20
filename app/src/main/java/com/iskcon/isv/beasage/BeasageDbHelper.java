@@ -101,13 +101,21 @@ public class BeasageDbHelper extends SQLiteOpenHelper {
     HashMap<Integer,BookItem> bookMap=new HashMap<>();
     Cursor cursor = database.query(TABLE_BEASAGE,
         new String[]{COLUMN_ID,COLUMN_BOOK_NAME,COLUMN_TOTAL_PAGES,COLUMN_TOTAL_SLOKAS,COLUMN_PAGES_READ,COLUMN_SLOKAS_READ,COLUMN_BOOK_URL}, null, null, null, null, null);
-    if(cursor.moveToFirst()){
       while (cursor.moveToNext()){
         bookMap.put(cursor.getInt(0),new BookItem(cursor.getString(1),cursor.getInt(2),cursor.getInt(3),cursor.getString(6),cursor.getInt(4),cursor.getInt(5)));
       }
-    }
     return bookMap;
   }
 
+  public boolean isBookExists(int id){
+    Cursor cursor = null;
+    String sql ="SELECT * FROM "+TABLE_BEASAGE+" WHERE "+ COLUMN_ID+"="+id;
+    cursor= database.rawQuery(sql,null);
+    if(cursor.getCount()>0){
+      return true;
+    }else{
+      return false;
+    }
+  }
 
 }
