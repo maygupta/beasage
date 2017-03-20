@@ -10,20 +10,19 @@
         android:layout_height="40dp"
         android:id="@+id/ivBook"
         android:src="@drawable/ic_arrow_back"
-        android:layout_weight="0.35"
+        android:layout_weight="0.15"
         android:layout_gravity="left"
         />
 
     <TextView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="New Text"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textColor="@color/white"
         android:id="@+id/tvBookName"
         android:layout_marginLeft="20dp"
-        android:layout_weight="0.6"
-        android:gravity="center_vertical"
+        android:layout_weight="0.8"
         />
 
     <Button
@@ -35,6 +34,7 @@
         android:layout_weight="0.05"
         android:layout_gravity="right"
         android:layout_marginBottom="40dp"
+        android:paddingTop="15dp"
         />
 
 </LinearLayout>
