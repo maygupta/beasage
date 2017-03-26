@@ -175,7 +175,11 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     }
 
     public void handleReminder() {
-        showTimePickerDialog();
+
+        Intent i = new Intent(this, TrackerActivity.class);
+        startActivity(i);
+//        showTimePickerDialog();
+
     }
 
     //This functions shows timepicker
@@ -268,11 +272,9 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     }
 
     public void handleOpenBbta(View tvBbta) {
-//        String url = "http://bbtacademic.com/product-tag/beasage_app/";
-//        Intent i = new Intent(Intent.ACTION_VIEW);
-//        i.setData(Uri.parse(url));
-//        startActivity(i);
-        Intent i = new Intent(this, TrackerActivity.class);
+        String url = "http://bbtacademic.com/product-tag/beasage_app/";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
         startActivity(i);
 
     }

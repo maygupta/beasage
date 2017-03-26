@@ -2,6 +2,7 @@ package com.iskcon.isv.beasage;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class TrackerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tracker);
 
         books = Books.getBooksInstance();
+        Picasso.with(this).setLoggingEnabled(true);
 
         Toolbar toolbar =(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -90,6 +92,10 @@ public class TrackerActivity extends AppCompatActivity {
                     }
                 });
 
+                ImageView ivBook = (ImageView) view.findViewById(R.id.ivBook);
+
+                Picasso.with(getApplicationContext()).load(bookItem.url).into(ivBook);
+
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -98,9 +104,6 @@ public class TrackerActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-
-                ImageView ivBook = (ImageView) view.findViewById(R.id.ivBook);
-//                Picasso.with(getApplicationContext()).load(bookItem.url).into(ivBook);
 
                 linearLayout.addView(view);
             }
