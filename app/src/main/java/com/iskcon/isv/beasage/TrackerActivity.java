@@ -92,48 +92,12 @@ public class TrackerActivity extends AppCompatActivity {
                 }catch (SQLException e){
 
                 }
-                final View view = inflater.inflate(R.layout.tracked_book_item, null);
-                TextView tvBookName = (TextView) view.findViewById(R.id.tvBookName);
-                tvBookName.setText(bookItem.name);
-
-//                Button btnRemove = (Button) view.findViewById(R.id.removeBtn);
-//                btnRemove.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                      try {
-//                        beasageDbHelper.open();
-//                        int result=beasageDbHelper.removeBookFromTable(id);
-//                        if(result>0){
-//                          selectedBooks.remove(id);
-//                          linearLayout.removeView(view);
-//                        }else{
-//                          Toast.makeText(TrackerActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
-//                        }
-//                        beasageDbHelper.close();
-//                      }catch (SQLException e){
-//                        Toast.makeText(TrackerActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
-//                      }
-//
-//                    }
-//                });
-
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(), BookTrackingActivity.class);
-                        intent.putExtra("id", id);
-                        startActivity(intent);
-                    }
-                });
-
-                ImageView ivBook = (ImageView) view.findViewById(R.id.ivBook);
-                Picasso.with(getApplicationContext()).load(bookItem.url).into(ivBook);
 
                 try {
                     beasageDbHelper.open();
                     long result= beasageDbHelper.insertNewBook(id,bookItem.name,bookItem.pages,bookItem.slokas,bookItem.url);
                     if(result>=0){
-                        linearLayout.addView(view);
+                        addBookToLayout(bookItem,id);
                     }else{
                         Toast.makeText(TrackerActivity.this,"Couldn't add data",Toast.LENGTH_LONG).show();
                     }
@@ -150,46 +114,51 @@ public class TrackerActivity extends AppCompatActivity {
     private void showPreviousBooks(){
         if(prevoiusBooks!=null){
             for(final int key:prevoiusBooks.keySet()){
-                final View view = inflater.inflate(R.layout.tracked_book_item, null);
-                TextView tvBookName = (TextView) view.findViewById(R.id.tvBookName);
-                tvBookName.setText(prevoiusBooks.get(key).name);
-                ImageView ivBook = (ImageView) view.findViewById(R.id.ivBook);
-                Picasso.with(getApplicationContext()).load(prevoiusBooks.get(key).url).into(ivBook);
-                view.setTag(key);
-                linearLayout.addView(view);
-
-//                Button btnRemove = (Button) view.findViewById(R.id.removeBtn);
-//                btnRemove.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        try {
-//                            beasageDbHelper.open();
-//                            int result=beasageDbHelper.removeBookFromTable(key);
-//                            if(result>0){
-//                                selectedBooks.remove(key);
-//                                linearLayout.removeView(view);
-//                            }else{
-//                                Toast.makeText(TrackerActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
-//                            }
-//                            beasageDbHelper.close();
-//                        }catch (SQLException e){
-//                            Toast.makeText(TrackerActivity.this,"Couldn't aremovedd data",Toast.LENGTH_LONG).show();
-//                        }
-//
-//                    }
-//                });
-
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(), BookTrackingActivity.class);
-                        intent.putExtra("id", key);
-                        startActivity(intent);
-                    }
-                });
+                addBookToLayout(prevoiusBooks.get(key),key);
             }
         }
     }
+
+    public void addBookToLayout(BookItem bookItem,final int id){
+        final View view = inflater.inflate(R.layout.tracked_book_item, null);
+        TextView tvBookName = (TextView) view.findViewById(R.id.tvBookName);
+        tvBookName.setText(bookItem.name);
+        view.setTag(id);
+        Button btnRemove = (Button) view.findViewById(R.id.removeBtn);
+        btnRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    beasageDbHelper.open();
+                    int result=beasageDbHelper.removeBookFromTable(id);
+                    if(result>0){
+                        selectedBooks.remove(id);
+                        linearLayout.removeView(view);
+                    }else{
+                        Toast.makeText(TrackerActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
+                    }
+                    beasageDbHelper.close();
+                }catch (SQLException e){
+                    Toast.makeText(TrackerActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), BookTrackingActivity.class);
+                intent.putExtra("id", id);
+                startActivity(intent);
+            }
+        });
+
+        ImageView ivBook = (ImageView) view.findViewById(R.id.ivBook);
+        Picasso.with(getApplicationContext()).load(bookItem.url).into(ivBook);
+        linearLayout.addView(view);
+    }
+
 
     @Override
     protected void onStop() {

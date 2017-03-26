@@ -6,34 +6,36 @@
     >
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="60dp"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
         android:id="@+id/ivBook"
         android:src="@drawable/ic_arrow_back"
-        android:layout_weight="0.35"
+        android:layout_weight="0.15"
         android:layout_gravity="left"
         />
 
     <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:text="New Text"
         android:textSize="20sp"
         android:textColor="@color/white"
         android:id="@+id/tvBookName"
-        android:layout_weight="0.65"
         android:layout_marginLeft="20dp"
+        android:layout_weight="0.8"
         />
 
-    <!--<Button-->
-        <!--android:id="@+id/removeBtn"-->
-        <!--android:background="@drawable/delete"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:layout_weight="0.05"-->
-        <!--android:layout_gravity="right"-->
-        <!--android:layout_marginBottom="40dp"-->
-        <!--android:paddingTop="15dp"-->
-        <!--/>-->
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:id="@+id/removeBtn"
+        android:background="@drawable/delete"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="0.05"
+        android:layout_gravity="right"
+        android:layout_marginBottom="40dp"
+        android:paddingTop="5dp"
+        />
 
 
 </LinearLayout>
