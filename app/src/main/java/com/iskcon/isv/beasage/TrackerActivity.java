@@ -96,26 +96,26 @@ public class TrackerActivity extends AppCompatActivity {
                 TextView tvBookName = (TextView) view.findViewById(R.id.tvBookName);
                 tvBookName.setText(bookItem.name);
 
-                Button btnRemove = (Button) view.findViewById(R.id.removeBtn);
-                btnRemove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                      try {
-                        beasageDbHelper.open();
-                        int result=beasageDbHelper.removeBookFromTable(id);
-                        if(result>0){
-                          selectedBooks.remove(id);
-                          linearLayout.removeView(view);
-                        }else{
-                          Toast.makeText(TrackerActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
-                        }
-                        beasageDbHelper.close();
-                      }catch (SQLException e){
-                        Toast.makeText(TrackerActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
-                      }
-
-                    }
-                });
+//                Button btnRemove = (Button) view.findViewById(R.id.removeBtn);
+//                btnRemove.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                      try {
+//                        beasageDbHelper.open();
+//                        int result=beasageDbHelper.removeBookFromTable(id);
+//                        if(result>0){
+//                          selectedBooks.remove(id);
+//                          linearLayout.removeView(view);
+//                        }else{
+//                          Toast.makeText(TrackerActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
+//                        }
+//                        beasageDbHelper.close();
+//                      }catch (SQLException e){
+//                        Toast.makeText(TrackerActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
+//                      }
+//
+//                    }
+//                });
 
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -158,26 +158,26 @@ public class TrackerActivity extends AppCompatActivity {
                 view.setTag(key);
                 linearLayout.addView(view);
 
-                Button btnRemove = (Button) view.findViewById(R.id.removeBtn);
-                btnRemove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            beasageDbHelper.open();
-                            int result=beasageDbHelper.removeBookFromTable(key);
-                            if(result>0){
-                                selectedBooks.remove(key);
-                                linearLayout.removeView(view);
-                            }else{
-                                Toast.makeText(TrackerActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
-                            }
-                            beasageDbHelper.close();
-                        }catch (SQLException e){
-                            Toast.makeText(TrackerActivity.this,"Couldn't aremovedd data",Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                });
+//                Button btnRemove = (Button) view.findViewById(R.id.removeBtn);
+//                btnRemove.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        try {
+//                            beasageDbHelper.open();
+//                            int result=beasageDbHelper.removeBookFromTable(key);
+//                            if(result>0){
+//                                selectedBooks.remove(key);
+//                                linearLayout.removeView(view);
+//                            }else{
+//                                Toast.makeText(TrackerActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
+//                            }
+//                            beasageDbHelper.close();
+//                        }catch (SQLException e){
+//                            Toast.makeText(TrackerActivity.this,"Couldn't aremovedd data",Toast.LENGTH_LONG).show();
+//                        }
+//
+//                    }
+//                });
 
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
