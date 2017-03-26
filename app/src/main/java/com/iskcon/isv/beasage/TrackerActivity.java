@@ -55,13 +55,6 @@ public class TrackerActivity extends AppCompatActivity {
         linearLayout = (LinearLayout) findViewById(R.id.selectedBooksLL);
 
         beasageDbHelper=new BeasageDbHelper(this);
-        try {
-            beasageDbHelper.open();
-            prevoiusBooks=beasageDbHelper.getAllBooks();
-            beasageDbHelper.close();
-            showPreviousBooks();
-        }catch (SQLException e){
-        }
 
 
         final Spinner spinner =(Spinner) findViewById(R.id.spinner2);
@@ -160,6 +153,18 @@ public class TrackerActivity extends AppCompatActivity {
         linearLayout.addView(view);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            linearLayout.removeAllViews();
+            beasageDbHelper.open();
+            prevoiusBooks=beasageDbHelper.getAllBooks();
+            beasageDbHelper.close();
+            showPreviousBooks();
+        }catch (SQLException e){
+        }
+    }
 
     @Override
     protected void onStop() {
