@@ -29,6 +29,7 @@ public class Books {
         items.add(new BookItem("Nectar of Devotion", 399, 0, "http://bbtacademic.com/wp-content/uploads/2016/07/the-nectar-of-devotion.jpg"));
         items.add(new BookItem("Nectar of Instruction", 91, 11, "http://bbtacademic.com/wp-content/uploads/2016/07/Screen-Shot-2016-07-26-at-9.53.51-PM.png"));
         items.add(new BookItem("TLC", 350, 0, "http://krishna.org/images/Misc/tlc_cover.jpg?x64805"));
+        items.add(new BookItem("Sumit Test", 999, 12, "http://krishna.org/images/Misc/tlc_cover.jpg?x64805"));
         setBooks(items);
     }
 
