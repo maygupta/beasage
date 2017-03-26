@@ -119,7 +119,7 @@ public class TrackerActivity extends AppCompatActivity {
         }
     }
 
-    public void addBookToLayout(BookItem bookItem,final int id){
+    public void addBookToLayout(final BookItem bookItem, final int id){
         final View view = inflater.inflate(R.layout.tracked_book_item, null);
         TextView tvBookName = (TextView) view.findViewById(R.id.tvBookName);
         tvBookName.setText(bookItem.name);
@@ -150,6 +150,7 @@ public class TrackerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), BookTrackingActivity.class);
                 intent.putExtra("id", id);
+                intent.putExtra("bookitem",bookItem);
                 startActivity(intent);
             }
         });

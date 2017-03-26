@@ -25,9 +25,10 @@ import java.sql.SQLException;
 
 public class BookTrackingActivity extends AppCompatActivity {
 
-    int pagesRead;
+    private int pagesRead;
     private BeasageDbHelper beasageDbHelper;
-    GraphView graph;
+    private GraphView graph;
+    private BookItem bookItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +51,20 @@ public class BookTrackingActivity extends AppCompatActivity {
         beasageDbHelper=new BeasageDbHelper(this);
 
         Intent i = getIntent();
-        Books books = Books.getBooksInstance();
         final int id=i.getIntExtra("id", 0);
-        final BookItem item = books.getBookById(id);
+         bookItem = i.getParcelableExtra("bookitem");
 
-        getSupportActionBar().setTitle(item.name);
+        getSupportActionBar().setTitle(bookItem.name);
 
         final TextView tvPageCount = (TextView) findViewById(R.id.tvPageCount);
-        pagesRead = 0;
-        tvPageCount.setText(pagesRead + "/" + item.pages + " pages");
+        pagesRead = bookItem.pagesRead;
+        tvPageCount.setText(pagesRead + "/" + bookItem.pages + " pages");
 
         TextView tvBookName = (TextView) findViewById(R.id.tvBookName);
-        tvBookName.setText(" of " + item.name);
+        tvBookName.setText(" of " + bookItem.name);
 
         ImageView ivBook = (ImageView) findViewById(R.id.ivBookBig);
-        Picasso.with(getApplicationContext()).load(item.url).into(ivBook);
+        Picasso.with(getApplicationContext()).load(bookItem.url).into(ivBook);
 
         graph = (GraphView) findViewById(R.id.graph);
         Date d1 = new Date(2017, 03, 21);
@@ -110,7 +110,7 @@ public class BookTrackingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 TextView tv = (TextView) findViewById(R.id.editText);
                 pagesRead += Integer.parseInt(tv.getText().toString());
-                tvPageCount.setText(pagesRead + "/" + item.pages + " pages");
+                tvPageCount.setText(pagesRead + "/" + bookItem.pages + " pages");
                 try{
                     beasageDbHelper.open();
                     long result = beasageDbHelper.addBookData(id,pagesRead,0);
