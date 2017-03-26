@@ -22,12 +22,24 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:id="@+id/ivBookBig"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+
+        />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="You have read"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
         android:textColor="@color/white"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/ivBookBig"
         android:id="@+id/tvBook"
         android:layout_centerHorizontal="true" />
 
@@ -49,6 +61,15 @@
         android:layout_below="@+id/tvBook"
         android:layout_toRightOf="@+id/tvPageCount"
         android:layout_toEndOf="@+id/tvPageCount" />
+
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        app:seriesColor="#ee0000"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/tvBookName"
+        android:id="@+id/graph" />
 
     <EditText
         android:layout_width="wrap_content"
