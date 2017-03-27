@@ -14,7 +14,7 @@ public class Books {
 
     Books(){
         booksMap = new ArrayList<>();
-        booksMap.add(new BookItem(0,"Bhagavad Gita", 717, 700,"http://bbtacademic.com/wp-content/uploads/2016/08/en-bg-388x600.jpg"));
+        booksMap.add(new BookItem(0,"Bhagavad Gita", 717, 700,"https://media.licdn.com/mpr/mpr/p/5/005/096/3d1/242b35e.jpg"));
         booksMap.add(new BookItem(1,"Srimad Bhagavatam", 14625, 14094, "http://bbtacademic.com/wp-content/uploads/2016/08/bhagavatam_big.jpg"));
         booksMap.add(new BookItem(2,"Caitanya Caritamrta", 6624, 11555, "http://bbtacademic.com/wp-content/uploads/2016/01/Caitanya-caritamrta.jpg"));
         booksMap.add(new BookItem(3,"Krsna Book", 796, 0,"http://www.prabhupada.org.uk/images/spb05.jpg"));
