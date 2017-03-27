@@ -176,7 +176,8 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
 
     public void handleReminder() {
 
-        Intent i = new Intent(this, TrackerActivity.class);
+        Intent i = new Intent(this, TrackedBooksActivity.class);
+        //Intent i = new Intent(this, TrackerActivity.class);
         startActivity(i);
 //        showTimePickerDialog();
 

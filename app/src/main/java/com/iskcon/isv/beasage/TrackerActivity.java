@@ -1,20 +1,17 @@
 package com.iskcon.isv.beasage;
 
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -24,12 +21,9 @@ import java.util.HashMap;
 
 public class TrackerActivity extends AppCompatActivity {
 
-    Books books;
-    HashMap<Integer, BookItem> selectedBooks;
+    private Books books;
+    private HashMap<Integer, BookItem> selectedBooks;
     private BeasageDbHelper beasageDbHelper;
-    private HashMap<Integer,BookItem> prevoiusBooks;
-    private LinearLayout linearLayout;
-    private LayoutInflater inflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,15 +41,14 @@ public class TrackerActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               Intent intent=new Intent(TrackerActivity.this,TrackedBooksActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 finish();
             }
         });
 
-        inflater = getLayoutInflater();
-        linearLayout = (LinearLayout) findViewById(R.id.selectedBooksLL);
-
         beasageDbHelper=new BeasageDbHelper(this);
-
 
         final Spinner spinner =(Spinner) findViewById(R.id.spinner2);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -78,7 +71,8 @@ public class TrackerActivity extends AppCompatActivity {
                 try {
                     beasageDbHelper.open();
                     if(beasageDbHelper.isBookExists(id)){
-                        Toast.makeText(getApplicationContext(), "Book already being tracked", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Book already being tracked. Choose different Book", Toast.LENGTH_SHORT).show();
+                        spinner.performClick();
                         return;
                     }
                     beasageDbHelper.close();
@@ -90,7 +84,22 @@ public class TrackerActivity extends AppCompatActivity {
                     beasageDbHelper.open();
                     long result= beasageDbHelper.insertNewBook(id,bookItem.name,bookItem.pages,bookItem.slokas,bookItem.url);
                     if(result>=0){
-                        addBookToLayout(bookItem,id);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(TrackerActivity.this);
+                        builder.setMessage("Book Tracked Successfully")
+                            .setTitle("Success");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent=new Intent(TrackerActivity.this,TrackedBooksActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
                     }else{
                         Toast.makeText(TrackerActivity.this,"Couldn't add data",Toast.LENGTH_LONG).show();
                     }
@@ -104,66 +113,9 @@ public class TrackerActivity extends AppCompatActivity {
         });
     }
 
-    private void showPreviousBooks(){
-        if(prevoiusBooks!=null){
-            for(final int key:prevoiusBooks.keySet()){
-                addBookToLayout(prevoiusBooks.get(key),key);
-            }
-        }
-    }
-
-    public void addBookToLayout(final BookItem bookItem, final int id){
-        final View view = inflater.inflate(R.layout.tracked_book_item, null);
-        TextView tvBookName = (TextView) view.findViewById(R.id.tvBookName);
-        tvBookName.setText(bookItem.name);
-        view.setTag(id);
-        Button btnRemove = (Button) view.findViewById(R.id.removeBtn);
-        btnRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    beasageDbHelper.open();
-                    int result=beasageDbHelper.removeBookFromTable(id);
-                    if(result>0){
-                        selectedBooks.remove(id);
-                        linearLayout.removeView(view);
-                    }else{
-                        Toast.makeText(TrackerActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
-                    }
-                    beasageDbHelper.close();
-                }catch (SQLException e){
-                    Toast.makeText(TrackerActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
-
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), BookTrackingActivity.class);
-                intent.putExtra("id", id);
-                intent.putExtra("bookitem",bookItem);
-                startActivity(intent);
-            }
-        });
-
-        ImageView ivBook = (ImageView) view.findViewById(R.id.ivBook);
-        Picasso.with(getApplicationContext()).load(bookItem.url).into(ivBook);
-        linearLayout.addView(view);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        try {
-            linearLayout.removeAllViews();
-            beasageDbHelper.open();
-            prevoiusBooks=beasageDbHelper.getAllBooks();
-            beasageDbHelper.close();
-            showPreviousBooks();
-        }catch (SQLException e){
-        }
     }
 
     @Override

@@ -20,5 +20,8 @@
     <color name="disable_forground_grey">#42221f1f</color>
     <color name="disable_thumb_grey">#1c000000</color>
     <color name="enable_thumb_green">#FFCC33</color>
-
+    <color name="light_grey">#999999</color>
+    <color name="red">#D0021B</color>
+    <color name="green">#79c255</color>
+    <color name="yellow">#FBD718</color>
 </resources>

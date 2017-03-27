@@ -1,7 +1,9 @@
 package com.iskcon.isv.beasage;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -115,13 +117,22 @@ public class BookTrackingActivity extends AppCompatActivity {
                     beasageDbHelper.open();
                     long result = beasageDbHelper.addBookData(id,pagesRead,0);
                     if(result>0){
-                        Toast.makeText(BookTrackingActivity.this,"Pages Added",Toast.LENGTH_LONG).show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(BookTrackingActivity.this);
+                        builder.setMessage("Pages Added Successfully")
+                            .setTitle("Success");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent=new Intent(BookTrackingActivity.this,TrackedBooksActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
 
-//                        Date d6 = new Date(2017, 03, 26);
-//                        BarGraphSeries<DataPoint>mSeries2 = new BarGraphSeries<>(new DataPoint[]{
-//                                new DataPoint(d6, pagesRead),
-//                        });
-//                        graph.addSeries(mSeries2);
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
                     }
                     beasageDbHelper.close();
                 }catch (SQLException e){

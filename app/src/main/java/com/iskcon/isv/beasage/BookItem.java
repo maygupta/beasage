@@ -7,6 +7,7 @@ import android.os.Parcelable;
  * Created by mayank on 3/19/17.
  */
 public class BookItem implements Parcelable{
+    int id;
     String name;
     int pages;
     int slokas;
@@ -14,14 +15,16 @@ public class BookItem implements Parcelable{
     int pagesRead;
     int slokasRead;
 
-    public BookItem(String n, int p, int s, String u) {
+    public BookItem(int id,String n, int p, int s, String u) {
+        this.id=id;
         name = n;
         pages = p;
         slokas = s;
         url = u;
     }
 
-    public BookItem(String n, int p, int s, String u,int pagesRead,int slokasRead) {
+    public BookItem(int id,String n, int p, int s, String u,int pagesRead,int slokasRead) {
+        this.id=id;
         name = n;
         pages = p;
         slokas = s;
@@ -31,6 +34,7 @@ public class BookItem implements Parcelable{
     }
 
     protected BookItem(Parcel in) {
+        id=in.readInt();
         name = in.readString();
         pages = in.readInt();
         slokas = in.readInt();
@@ -58,6 +62,7 @@ public class BookItem implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
         parcel.writeString(name);
         parcel.writeInt(pages);
         parcel.writeInt(slokas);

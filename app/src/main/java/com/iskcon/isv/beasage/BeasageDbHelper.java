@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -97,12 +98,12 @@ public class BeasageDbHelper extends SQLiteOpenHelper {
     return updateId;
   }
 
-  public HashMap<Integer,BookItem> getAllBooks(){
-    HashMap<Integer,BookItem> bookMap=new HashMap<>();
+  public ArrayList<BookItem> getAllBooks(){
+    ArrayList<BookItem> bookMap=new ArrayList<>();
     Cursor cursor = database.query(TABLE_BEASAGE,
         new String[]{COLUMN_ID,COLUMN_BOOK_NAME,COLUMN_TOTAL_PAGES,COLUMN_TOTAL_SLOKAS,COLUMN_PAGES_READ,COLUMN_SLOKAS_READ,COLUMN_BOOK_URL}, null, null, null, null, null);
       while (cursor.moveToNext()){
-        bookMap.put(cursor.getInt(0),new BookItem(cursor.getString(1),cursor.getInt(2),cursor.getInt(3),cursor.getString(6),cursor.getInt(4),cursor.getInt(5)));
+        bookMap.add(new BookItem(cursor.getInt(0),cursor.getString(1),cursor.getInt(2),cursor.getInt(3),cursor.getString(6),cursor.getInt(4),cursor.getInt(5)));
       }
     return bookMap;
   }
