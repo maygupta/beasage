@@ -13,12 +13,12 @@
 
     <ImageView
         android:id="@+id/notification_btn"
-        android:layout_width="25dp"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignParentRight="true"
         android:src="@drawable/notify"
-        android:layout_marginTop="3dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         />
 
     <ImageView

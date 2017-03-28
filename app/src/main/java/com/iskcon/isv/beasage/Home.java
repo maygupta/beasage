@@ -123,8 +123,10 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         if(sharedpreferences!=null){
             if(sharedpreferences.getBoolean(PREF_IS_REMINDER_SET,false)){
                 notifyImage.setTag(true);
+                notifyImage.setImageResource(R.drawable.notify_cancel);
             }else{
                 notifyImage.setTag(false);
+                notifyImage.setImageResource(R.drawable.notify);
             }
         }
 
@@ -236,7 +238,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         editor.putBoolean(PREF_IS_REMINDER_SET,true);
         editor.commit();
         notifyImage.setTag(true);
-
+        notifyImage.setImageResource(R.drawable.notify_cancel);
     }
 
     public void cancelReminder(){
@@ -250,6 +252,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         editor.putBoolean(PREF_IS_REMINDER_SET,false);
         editor.commit();
         notifyImage.setTag(false);
+        notifyImage.setImageResource(R.drawable.notify);
 
     }
 
