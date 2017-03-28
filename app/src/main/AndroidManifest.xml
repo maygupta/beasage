@@ -22,9 +22,8 @@
 
         <receiver android:name=".NotificationPublisher"/>
 
-        <activity android:name=".TrackerActivity"/>
-        <activity android:name=".BookTrackingActivity"/>
-        <activity android:name=".TrackedBooksActivity"/>
+        <activity android:name=".ShowBookDetailsActivity"/>
+        <activity android:name=".ShowTrackedBooksActivity"/>
     </application>
 
 </manifest>

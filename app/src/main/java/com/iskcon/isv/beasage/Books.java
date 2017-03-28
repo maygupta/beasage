@@ -44,6 +44,10 @@ public class Books {
         return 0;
     }
 
+    public ArrayList<BookItem> getBooksMap(){
+        return booksMap;
+    }
+
 }
 
 

@@ -7,25 +7,22 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 import com.squareup.picasso.Picasso;
 
 import java.sql.Date;
 import java.sql.SQLException;
 
-public class BookTrackingActivity extends AppCompatActivity {
+public class ShowBookDetailsActivity extends AppCompatActivity {
 
     private int pagesRead;
     private BeasageDbHelper beasageDbHelper;
@@ -117,13 +114,13 @@ public class BookTrackingActivity extends AppCompatActivity {
                     beasageDbHelper.open();
                     long result = beasageDbHelper.addBookData(id,pagesRead,0);
                     if(result>0){
-                        AlertDialog.Builder builder = new AlertDialog.Builder(BookTrackingActivity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ShowBookDetailsActivity.this);
                         builder.setMessage("Pages Added Successfully")
                             .setTitle("Success");
                         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent=new Intent(BookTrackingActivity.this,TrackedBooksActivity.class);
+                                Intent intent=new Intent(ShowBookDetailsActivity.this,ShowTrackedBooksActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 finish();

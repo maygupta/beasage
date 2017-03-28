@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Created by sumitgarg on 27/03/17.
  */
 
-public class TrackedBooksActivity extends AppCompatActivity{
+public class ShowTrackedBooksActivity extends AppCompatActivity{
 
   private BeasageDbHelper beasageDbHelper;
   private ArrayList<BookItem> previousBooks;
@@ -67,7 +67,7 @@ public class TrackedBooksActivity extends AppCompatActivity{
         @Override
         public void deleteRecord(final int id) {
 
-          AlertDialog.Builder builder = new AlertDialog.Builder(TrackedBooksActivity.this);
+          AlertDialog.Builder builder = new AlertDialog.Builder(ShowTrackedBooksActivity.this);
           builder.setMessage("Do you want to remove current book?")
               .setTitle("Alert");
           builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -77,7 +77,7 @@ public class TrackedBooksActivity extends AppCompatActivity{
                 beasageDbHelper.open();
                 int result=beasageDbHelper.removeBookFromTable(id);
                 if(result>0){
-                  AlertDialog.Builder builderInner = new AlertDialog.Builder(TrackedBooksActivity.this);
+                  AlertDialog.Builder builderInner = new AlertDialog.Builder(ShowTrackedBooksActivity.this);
                   builderInner.setMessage("Book Deleted Successfully")
                       .setTitle("Success");
                   builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -90,11 +90,11 @@ public class TrackedBooksActivity extends AppCompatActivity{
                   AlertDialog dialogInner = builderInner.create();
                   dialogInner.show();
                 }else{
-                  Toast.makeText(TrackedBooksActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
+                  Toast.makeText(ShowTrackedBooksActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
                 }
                 beasageDbHelper.close();
               }catch (SQLException e){
-                Toast.makeText(TrackedBooksActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
+                Toast.makeText(ShowTrackedBooksActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
               }
             }
           });
@@ -113,7 +113,7 @@ public class TrackedBooksActivity extends AppCompatActivity{
 
         @Override
         public void openBookDetails(int id, BookItem bookItem) {
-          Intent intent = new Intent(getApplicationContext(), BookTrackingActivity.class);
+          Intent intent = new Intent(getApplicationContext(), ShowBookDetailsActivity.class);
           intent.putExtra("id", id);
           intent.putExtra("bookitem",bookItem);
           startActivity(intent);
@@ -130,8 +130,10 @@ public class TrackedBooksActivity extends AppCompatActivity{
     addBook.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Intent i = new Intent(TrackedBooksActivity.this, TrackerActivity.class);
-        startActivity(i);
+        SelectBookDialogFragment cvvDialogFragment = SelectBookDialogFragment.getInstance();
+        cvvDialogFragment.show(getSupportFragmentManager(), "BookTracker");
+        //Intent i = new Intent(ShowTrackedBooksActivity.this, TrackerActivity.class);
+        //startActivity(i);
       }
     });
   }

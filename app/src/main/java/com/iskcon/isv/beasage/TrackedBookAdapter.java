@@ -49,12 +49,10 @@ public class TrackedBookAdapter extends RecyclerView.Adapter<TrackedBookAdapter.
       final BookItem item=previousBooks.get(position);
       holder.bookName.setText(previousBooks.get(position).name);
       int per=(item.pagesRead*100/item.pages);
-      if(per<20){
+      if(per==0){
         holder.bookProgress.setTextColor(context.getResources().getColor(R.color.red));
-      }else if(per<50){
+      }else if(per<=50){
         holder.bookProgress.setTextColor(context.getResources().getColor(R.color.orange));
-      }else if(per <70){
-        holder.bookProgress.setTextColor(context.getResources().getColor(R.color.yellow));
       }else{
         holder.bookProgress.setTextColor(context.getResources().getColor(R.color.green));
       }

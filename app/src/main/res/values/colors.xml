@@ -24,4 +24,5 @@
     <color name="red">#D0021B</color>
     <color name="green">#79c255</color>
     <color name="yellow">#FBD718</color>
+    <color name="transparent">#00ffffff</color>
 </resources>

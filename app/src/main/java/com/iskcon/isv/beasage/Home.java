@@ -1,6 +1,5 @@
 package com.iskcon.isv.beasage;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -176,7 +175,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
 
     public void handleReminder() {
 
-        Intent i = new Intent(this, TrackedBooksActivity.class);
+        Intent i = new Intent(this, ShowTrackedBooksActivity.class);
         //Intent i = new Intent(this, TrackerActivity.class);
         startActivity(i);
 //        showTimePickerDialog();
