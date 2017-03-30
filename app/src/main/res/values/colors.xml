@@ -27,4 +27,5 @@
     <color name="yellow">#FBD718</color>
     <color name="transparent">#00ffffff</color>
     <color name="transparent_white">#90FFFFFF</color>
+    <color name="light_yellow">#FCF3CF</color>
 </resources>

@@ -2,6 +2,12 @@ package com.iskcon.isv.beasage;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -9,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,49 +73,7 @@ public class ShowTrackedBooksActivity extends AppCompatActivity{
       trackedBookListener = new TrackedBookListener() {
         @Override
         public void deleteRecord(final int id) {
-
-          AlertDialog.Builder builder = new AlertDialog.Builder(ShowTrackedBooksActivity.this);
-          builder.setMessage("Do you want to remove current book?")
-              .setTitle("Alert");
-          builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-              try {
-                beasageDbHelper.open();
-                int result=beasageDbHelper.removeBookFromTable(id);
-                if(result>0){
-                  AlertDialog.Builder builderInner = new AlertDialog.Builder(ShowTrackedBooksActivity.this);
-                  builderInner.setMessage("Book Deleted Successfully")
-                      .setTitle("Success");
-                  builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                      getBooksFromDB();
-                    }
-                  });
-
-                  AlertDialog dialogInner = builderInner.create();
-                  dialogInner.show();
-                }else{
-                  Toast.makeText(ShowTrackedBooksActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
-                }
-                beasageDbHelper.close();
-              }catch (SQLException e){
-                Toast.makeText(ShowTrackedBooksActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
-              }
-            }
-          });
-
-          builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-          });
-
-          AlertDialog dialog = builder.create();
-          dialog.show();
-
+         deleteBookRecord(id,false);
         }
 
         @Override
@@ -130,14 +95,99 @@ public class ShowTrackedBooksActivity extends AppCompatActivity{
     addBook.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        SelectBookDialogFragment cvvDialogFragment = SelectBookDialogFragment.getInstance();
-        cvvDialogFragment.show(getSupportFragmentManager(), "BookTracker");
-        //Intent i = new Intent(ShowTrackedBooksActivity.this, TrackerActivity.class);
-        //startActivity(i);
+        SelectBookDialogFragment showBookDetailDialog = SelectBookDialogFragment.getInstance();
+        showBookDetailDialog.show(getSupportFragmentManager(), "BookTracker");
       }
     });
+
+    initSwipe();
   }
 
+
+  private void initSwipe(){
+    ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+      @Override
+      public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+        return false;
+      }
+
+      @Override
+      public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+       int position=viewHolder.getAdapterPosition();
+        if(direction==ItemTouchHelper.LEFT){
+          final BookItem item=previousBooks.get(position);
+          deleteBookRecord(item.id,true);
+        }
+      }
+
+      @Override
+      public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        Bitmap icon= BitmapFactory.decodeResource(getResources(), R.drawable.delete2);
+        if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
+          View itemView = viewHolder.itemView;
+          float height = (float) itemView.getBottom() - (float) itemView.getTop();
+          float width = height / 3;
+          Paint p=new Paint();
+          p.setColor(Color.parseColor("#D32F2F"));
+          RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
+          c.drawRect(background,p);
+          RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
+          c.drawBitmap(icon,null,icon_dest,p);
+        }
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+      }
+    };
+
+    ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+    itemTouchHelper.attachToRecyclerView(bookRecyclerView);
+
+  }
+
+  private void deleteBookRecord(final int id, final boolean fromSwipe){
+    AlertDialog.Builder builder = new AlertDialog.Builder(ShowTrackedBooksActivity.this);
+    builder.setMessage("Do you want to remove current book?")
+        .setTitle("Alert");
+    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        try {
+          beasageDbHelper.open();
+          int result=beasageDbHelper.removeBookFromTable(id);
+          if(result>0){
+            AlertDialog.Builder builderInner = new AlertDialog.Builder(ShowTrackedBooksActivity.this);
+            builderInner.setMessage("Book Deleted Successfully")
+                .setTitle("Success");
+            builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+                getBooksFromDB();
+              }
+            });
+
+            AlertDialog dialogInner = builderInner.create();
+            dialogInner.show();
+          }else{
+            Toast.makeText(ShowTrackedBooksActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
+          }
+          beasageDbHelper.close();
+        }catch (SQLException e){
+          Toast.makeText(ShowTrackedBooksActivity.this,"Couldn't remove data",Toast.LENGTH_LONG).show();
+        }
+      }
+    });
+
+    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        if(fromSwipe)
+        getBooksFromDB();
+      }
+    });
+
+    AlertDialog dialog = builder.create();
+    dialog.setCanceledOnTouchOutside(false);
+    dialog.show();
+  }
 
   private void getBooksFromDB(){
     try {

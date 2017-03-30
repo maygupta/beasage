@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -59,6 +60,8 @@ public class ShowBookDetailsActivity extends AppCompatActivity {
         toggleYearButton=(TextView)findViewById(R.id.year);
         inputLayoutPages=(TextInputLayout)findViewById(R.id.input_layout_pages);
         tv = (TextView) findViewById(R.id.editText);
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         final TextView tvPageCount = (TextView) findViewById(R.id.tvPageCount);
         pagesRead = bookItem.pagesRead;

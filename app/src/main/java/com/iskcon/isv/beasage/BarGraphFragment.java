@@ -88,10 +88,13 @@ public class BarGraphFragment extends Fragment {
     barDataSet1.setColor(Color.rgb(0, 155, 0));
     BarDataSet barDataSet2 = new BarDataSet(valueSet2, "Deleted");
     barDataSet2.setColors(ColorTemplate.COLORFUL_COLORS);
+    BarDataSet barDataSet3 = new BarDataSet(valueSet3, "New");
+    barDataSet3.setColors(ColorTemplate.COLORFUL_COLORS);
 
     dataSets = new ArrayList<>();
     dataSets.add(barDataSet1);
     dataSets.add(barDataSet2);
+    dataSets.add(barDataSet3);
     return dataSets;
   }
 
