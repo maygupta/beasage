@@ -2,32 +2,30 @@ package com.iskcon.isv.beasage;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
+import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.ValueDependentColor;
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
-import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
-import com.squareup.picasso.Picasso;
-
-import java.sql.Date;
 import java.sql.SQLException;
 
 public class ShowBookDetailsActivity extends AppCompatActivity {
 
     private int pagesRead;
     private BeasageDbHelper beasageDbHelper;
-    private GraphView graph;
     private BookItem bookItem;
+    private TextView toggleDayButton;
+    private TextView toggleWeekButton;
+    private TextView toggleMonthButton;
+    private TextView toggleYearButton;
+    private TextInputLayout inputLayoutPages;
+    private TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,88 +53,180 @@ public class ShowBookDetailsActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle(bookItem.name);
 
+        toggleDayButton=(TextView)findViewById(R.id.day);
+        toggleWeekButton=(TextView)findViewById(R.id.week);
+        toggleMonthButton=(TextView)findViewById(R.id.month);
+        toggleYearButton=(TextView)findViewById(R.id.year);
+        inputLayoutPages=(TextInputLayout)findViewById(R.id.input_layout_pages);
+        tv = (TextView) findViewById(R.id.editText);
+
         final TextView tvPageCount = (TextView) findViewById(R.id.tvPageCount);
         pagesRead = bookItem.pagesRead;
         tvPageCount.setText(pagesRead + "/" + bookItem.pages + " pages");
 
-        TextView tvBookName = (TextView) findViewById(R.id.tvBookName);
-        tvBookName.setText(" of " + bookItem.name);
 
-        ImageView ivBook = (ImageView) findViewById(R.id.ivBookBig);
-        Picasso.with(getApplicationContext()).load(bookItem.url).into(ivBook);
+        if(savedInstanceState==null) {
+          toggleDayButton.setTextColor(getResources().getColor(R.color.orange));
+          final FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+          BarGraphFragment barGraphFragment = BarGraphFragment.getInstance("day");
+          fragmentTransaction.add(R.id.graphFrame, barGraphFragment);
+          fragmentTransaction.addToBackStack(null);
+          fragmentTransaction.commit();
+        }
 
-        graph = (GraphView) findViewById(R.id.graph);
-        Date d1 = new Date(2017, 03, 21);
-        Date d2 = new Date(2017, 03, 22);
-        Date d3 = new Date(2017, 03, 23);
-        Date d4 = new Date(2017, 03, 24);
-        Date d5 = new Date(2017, 03, 25);
 
-        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
-                new DataPoint(d1, 21),
-                new DataPoint(d2, 24),
-                new DataPoint(d3, 13),
-                new DataPoint(d4, 21),
-                new DataPoint(d5, 21),
-        });
-        // styling
-        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+        toggleDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public int get(DataPoint data) {
-                if(data.getY() >= 21) {
-                    return Color.GREEN;
-                } else {
-                    return Color.RED;
-                }
+            public void onClick(View view) {
+                toggleDayButton.setTextColor(getResources().getColor(R.color.orange));
+                toggleWeekButton.setTextColor(getResources().getColor(R.color.grey));
+                toggleMonthButton.setTextColor(getResources().getColor(R.color.grey));
+                toggleYearButton.setTextColor(getResources().getColor(R.color.grey));
+                final FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                BarGraphFragment barGraphFragment =  BarGraphFragment.getInstance("day");
+                fragmentTransaction.replace(R.id.graphFrame,barGraphFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
-        series.setSpacing(30);
 
-        series.setDrawValuesOnTop(true);
-        series.setValuesOnTopColor(Color.BLACK);
+        toggleWeekButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleWeekButton.setTextColor(getResources().getColor(R.color.orange));
+                toggleDayButton.setTextColor(getResources().getColor(R.color.grey));
+                toggleMonthButton.setTextColor(getResources().getColor(R.color.grey));
+                toggleYearButton.setTextColor(getResources().getColor(R.color.grey));
 
-        graph.addSeries(series);
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
+                final FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                BarGraphFragment barGraphFragment =  BarGraphFragment.getInstance("week");
+                fragmentTransaction.replace(R.id.graphFrame,barGraphFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
-        graph.getViewport().setMinX(d1.getTime());
-        graph.getViewport().setMaxX(d5.getTime());
-        graph.getViewport().setXAxisBoundsManual(true);
-        graph.getGridLabelRenderer().setHumanRounding(false);
+        toggleMonthButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleMonthButton.setTextColor(getResources().getColor(R.color.orange));
+                toggleDayButton.setTextColor(getResources().getColor(R.color.grey));
+                toggleWeekButton.setTextColor(getResources().getColor(R.color.grey));
+                toggleYearButton.setTextColor(getResources().getColor(R.color.grey));
 
-        Button btn = (Button) findViewById(R.id.addPages);
-        btn.setOnClickListener(new View.OnClickListener() {
+                final FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                BarGraphFragment barGraphFragment =  BarGraphFragment.getInstance("month");
+                fragmentTransaction.replace(R.id.graphFrame,barGraphFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+
+        toggleYearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleYearButton.setTextColor(getResources().getColor(R.color.orange));
+                toggleDayButton.setTextColor(getResources().getColor(R.color.grey));
+                toggleWeekButton.setTextColor(getResources().getColor(R.color.grey));
+                toggleMonthButton.setTextColor(getResources().getColor(R.color.grey));
+            }
+        });
+
+
+        Button addBtn = (Button) findViewById(R.id.addPages);
+        addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView tv = (TextView) findViewById(R.id.editText);
-                pagesRead += Integer.parseInt(tv.getText().toString());
-                tvPageCount.setText(pagesRead + "/" + bookItem.pages + " pages");
-                try{
-                    beasageDbHelper.open();
-                    long result = beasageDbHelper.addBookData(id,pagesRead,0);
-                    if(result>0){
-                        AlertDialog.Builder builder = new AlertDialog.Builder(ShowBookDetailsActivity.this);
-                        builder.setMessage("Pages Added Successfully")
-                            .setTitle("Success");
-                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent=new Intent(ShowBookDetailsActivity.this,ShowTrackedBooksActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                finish();
-                            }
-                        });
-
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-
-                    }
-                    beasageDbHelper.close();
-                }catch (SQLException e){
-
+                if(TextUtils.isEmpty(tv.getText().toString())){
+                  inputLayoutPages.setError("Please enter no of pages");
+                    pagesRead=bookItem.pagesRead;
+                    return;
                 }
+
+                if(Integer.valueOf(tv.getText().toString())==0){
+                    inputLayoutPages.setError("Please enter atleast 1 page");
+                    pagesRead=bookItem.pagesRead;
+                    return;
+                }
+                pagesRead += Integer.parseInt(tv.getText().toString());
+                if(pagesRead>bookItem.pages){
+                    inputLayoutPages.setError("You Cannot read more than "+bookItem.pages +" pages");
+                    pagesRead=bookItem.pagesRead;
+                  return;
+                }
+
+                inputLayoutPages.setError(null);
+
+                tvPageCount.setText(pagesRead + "/" + bookItem.pages + " pages");
+
+                updatePageDb(id,pagesRead,0);
             }
         });
 
+
+        Button delBtn = (Button) findViewById(R.id.delPages);
+        delBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(TextUtils.isEmpty(tv.getText().toString())){
+                    inputLayoutPages.setError("Please enter no of pages");
+                    pagesRead=bookItem.pagesRead;
+                    return;
+                }
+
+                if(Integer.valueOf(tv.getText().toString())==0){
+                    inputLayoutPages.setError("Please enter atleast 1 page");
+                    pagesRead=bookItem.pagesRead;
+                    return;
+                }
+
+                pagesRead -= Integer.parseInt(tv.getText().toString());
+                if(pagesRead<0){
+                    inputLayoutPages.setError("You Cannot delete more than "+bookItem.pagesRead +" pages");
+                    pagesRead=bookItem.pagesRead;
+                    return;
+                }
+
+                inputLayoutPages.setError(null);
+                tvPageCount.setText(pagesRead + "/" + bookItem.pages + " pages");
+
+                updatePageDb(id,pagesRead,0);
+            }
+        });
+
+    }
+
+    private void updatePageDb(int id,int pagesRead,int slokasRead){
+        try{
+            beasageDbHelper.open();
+            long result = beasageDbHelper.addBookData(id,pagesRead,slokasRead);
+            if(result>0){
+                AlertDialog.Builder builder = new AlertDialog.Builder(ShowBookDetailsActivity.this);
+                builder.setMessage("Pages Deleted Successfully")
+                    .setTitle("Success");
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent=new Intent(ShowBookDetailsActivity.this,ShowTrackedBooksActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+            beasageDbHelper.close();
+        }catch (SQLException e){
+
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
