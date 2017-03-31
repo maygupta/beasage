@@ -12,6 +12,16 @@
     tools:context="com.iskcon.isv.beasage.Home">
 
     <ImageView
+        android:id="@+id/notification_btn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/notify"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        />
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/app_logo"
@@ -275,7 +285,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set Reminder"
+        android:text="Track"
         android:id="@+id/tvReminder"
         android:background="@drawable/button_effect"
         android:textSize="15dp"

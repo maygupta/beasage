@@ -8,6 +8,7 @@
     <color name="orange">#ED8E24</color>
     <color name="script">#FFCC33</color>
     <color name="white">#fff</color>
+    <color name="white_dark">#f2eeee</color>
     <color name="card_bg">#ED8E24</color>
     <color name="black">#000</color>
     <color name="black_light">#e3232323</color>
@@ -20,5 +21,11 @@
     <color name="disable_forground_grey">#42221f1f</color>
     <color name="disable_thumb_grey">#1c000000</color>
     <color name="enable_thumb_green">#FFCC33</color>
-
+    <color name="light_grey">#999999</color>
+    <color name="red">#D0021B</color>
+    <color name="green">#79c255</color>
+    <color name="yellow">#FBD718</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="transparent_white">#90FFFFFF</color>
+    <color name="light_yellow">#FCF3CF</color>
 </resources>

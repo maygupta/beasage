@@ -19,6 +19,7 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -51,6 +52,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
     TextView pageOrSloka;
     boolean isDemoStarted = false;
     TextView tvReminder;
+    private ImageView notifyImage;
 
     public static final String EXTRA_CURR_BOOK_POS="extra_curBookPos";
     public static final String EXTRA_CURRENT_DURATION_POS="extra_currentDurationPos";
@@ -69,6 +71,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         tvResult= (TextView) findViewById(R.id.tvResult);
         pageOrSloka = (TextView) findViewById(R.id.pageOrSloka);
         tvReminder=(TextView)findViewById(R.id.tvReminder);
+        notifyImage=(ImageView)findViewById(R.id.notification_btn);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         books = new ArrayList<>();
@@ -119,14 +122,23 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
 
         if(sharedpreferences!=null){
             if(sharedpreferences.getBoolean(PREF_IS_REMINDER_SET,false)){
-                tvReminder.setText("Cancel Reminder");
-                tvReminder.setTag(true);
+                notifyImage.setTag(true);
+                notifyImage.setImageResource(R.drawable.notify_cancel);
             }else{
-                tvReminder.setTag(false);
+                notifyImage.setTag(false);
+                notifyImage.setImageResource(R.drawable.notify);
             }
         }
 
         tvReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Home.this, ShowTrackedBooksActivity.class);
+                startActivity(i);
+            }
+        });
+
+        notifyImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if((boolean)view.getTag()==true){
@@ -151,7 +163,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                     dialog.show();
 
                 }else{
-                    handleReminder();
+                    showTimePickerDialog();
                 }
             }
         });
@@ -171,10 +183,6 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
                 break;
         }
         setResultView();
-    }
-
-    public void handleReminder() {
-        showTimePickerDialog();
     }
 
     //This functions shows timepicker
@@ -229,10 +237,8 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putBoolean(PREF_IS_REMINDER_SET,true);
         editor.commit();
-
-        tvReminder.setText("Cancel Reminder");
-        tvReminder.setTag(true);
-
+        notifyImage.setTag(true);
+        notifyImage.setImageResource(R.drawable.notify_cancel);
     }
 
     public void cancelReminder(){
@@ -245,9 +251,9 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putBoolean(PREF_IS_REMINDER_SET,false);
         editor.commit();
+        notifyImage.setTag(false);
+        notifyImage.setImageResource(R.drawable.notify);
 
-        tvReminder.setText("Set Reminder");
-        tvReminder.setTag(false);
     }
 
     public void readDataFromIntent(Intent intent){
@@ -271,6 +277,7 @@ public class Home extends AppCompatActivity implements WheelPicker.OnItemSelecte
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
+
     }
 
     @Override

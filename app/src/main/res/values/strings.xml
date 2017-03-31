@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Be A Sage</string>
+
+    <string-array name="books_array">
+        <item>Bhagavad Gita</item>
+        <item>Srimad Bhagavatam</item>
+        <item>Caitanya Caritamrta</item>
+        <item>Krsna Book</item>
+        <item>Sri Isopanishad</item>
+        <item>Nectar of Devotion</item>
+        <item>Nectar of Instruction</item>
+        <item>TLC</item>
+        <item>Sumit Test</item>
+    </string-array>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="select">Select</string>
+    <string name="select_a_book_to_track">Select a book to track</string>
 </resources>
