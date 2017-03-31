@@ -25,6 +25,7 @@ import java.util.Calendar;
 public class BarGraphFragment extends Fragment {
 
   private String query="day";
+  private BeasageDbHelper beasageDbHelper;
 
   public BarGraphFragment(){
     super();
@@ -44,6 +45,7 @@ public class BarGraphFragment extends Fragment {
     if(getArguments()!=null && getArguments().getString("query")!=null){
       query=getArguments().getString("query");
     }
+    beasageDbHelper=new BeasageDbHelper(getActivity());
   }
 
   @Nullable
@@ -63,10 +65,12 @@ public class BarGraphFragment extends Fragment {
     chart.setDrawGridBackground(false);
     BarData data = new BarData(getXAxisValues(), getDataSet());
     chart.setData(data);
+    chart.setDescription("");
     chart.animateXY(2000, 2000);
     chart.invalidate();
 
   }
+
 
   private ArrayList<BarDataSet> getDataSet() {
     ArrayList<BarDataSet> dataSets = null;

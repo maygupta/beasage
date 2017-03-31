@@ -13,8 +13,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class ShowBookDetailsActivity extends AppCompatActivity {
 
@@ -162,7 +165,7 @@ public class ShowBookDetailsActivity extends AppCompatActivity {
 
                 tvPageCount.setText(pagesRead + "/" + bookItem.pages + " pages");
 
-                updatePageDb(id,pagesRead,0);
+                updatePageDb(id,pagesRead,0,"Pages Added Successfully","A",getTodayDate());
             }
         });
 
@@ -193,19 +196,20 @@ public class ShowBookDetailsActivity extends AppCompatActivity {
                 inputLayoutPages.setError(null);
                 tvPageCount.setText(pagesRead + "/" + bookItem.pages + " pages");
 
-                updatePageDb(id,pagesRead,0);
+                updatePageDb(id,pagesRead,0,"\"Pages Deleted Successfully\"","D",getTodayDate());
             }
         });
 
     }
 
-    private void updatePageDb(int id,int pagesRead,int slokasRead){
+    private void updatePageDb(int id,int pagesRead,int slokasRead,String message,String flag,String date){
         try{
             beasageDbHelper.open();
             long result = beasageDbHelper.addBookData(id,pagesRead,slokasRead);
-            if(result>0){
+            long result_history = beasageDbHelper.addBookDataHistory(id,pagesRead,slokasRead,flag,date);
+            if(result>0 && result_history>0){
                 AlertDialog.Builder builder = new AlertDialog.Builder(ShowBookDetailsActivity.this);
-                builder.setMessage("Pages Deleted Successfully")
+                builder.setMessage(message)
                     .setTitle("Success");
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -220,11 +224,19 @@ public class ShowBookDetailsActivity extends AppCompatActivity {
                 AlertDialog dialog = builder.create();
                 dialog.show();
 
+            }else{
+                Toast.makeText(this,"There was some problem while adding pagees",Toast.LENGTH_LONG).show();
             }
             beasageDbHelper.close();
         }catch (SQLException e){
 
         }
+    }
+
+    public String getTodayDate(){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat mdformat = new SimpleDateFormat("dd / MM / yyyy ");
+        return mdformat.format(calendar.getTime());
     }
 
     @Override

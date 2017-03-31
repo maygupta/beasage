@@ -9,7 +9,6 @@ import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by sumitgarg on 19/03/17.
@@ -29,7 +28,11 @@ public class BeasageDbHelper extends SQLiteOpenHelper {
   public static final String COLUMN_SLOKAS_READ = "slokas_read";
   public static final String COLUMN_BOOK_URL = "book_url";
 
-  private static final String DATABASE_CREATE = "create table "
+  public static final String TABLE_BEASAGE_HISTORY = "table_beasage_hist";
+  public static final String COLUMN_FLAG = "book_flag";
+  public static final String COLUMN_DATE = "date_added";
+
+  private static final String TABLE_CREATE_BOOKS = "create table "
       + TABLE_BEASAGE + "( " + COLUMN_ID
       + " integer primary key , " + COLUMN_BOOK_NAME
       + " text not null , "+
@@ -38,6 +41,16 @@ public class BeasageDbHelper extends SQLiteOpenHelper {
       COLUMN_PAGES_READ +" integer ,"+
       COLUMN_SLOKAS_READ +" integer,"+
       COLUMN_BOOK_URL+" text );";
+
+
+  private static final String TABLE_CREATE_HISTORY = "create table "
+      + TABLE_BEASAGE_HISTORY + "( " + COLUMN_ID
+      + " integer , " +
+      COLUMN_PAGES_READ +" integer ,"+
+      COLUMN_SLOKAS_READ +" integer ,"+
+      COLUMN_FLAG +" text ,"+
+      COLUMN_DATE+" text );";
+
   private SQLiteDatabase database;
 
   public void open() throws SQLException {
@@ -56,7 +69,8 @@ public class BeasageDbHelper extends SQLiteOpenHelper {
 
   @Override
   public void onCreate(SQLiteDatabase sqLiteDatabase) {
-    sqLiteDatabase.execSQL(DATABASE_CREATE);
+    sqLiteDatabase.execSQL(TABLE_CREATE_BOOKS);
+    sqLiteDatabase.execSQL(TABLE_CREATE_HISTORY);
   }
 
 
@@ -96,6 +110,19 @@ public class BeasageDbHelper extends SQLiteOpenHelper {
     values.put(COLUMN_SLOKAS_READ,slokasRead);
     long updateId=database.update(TABLE_BEASAGE,values,COLUMN_ID+"="+id,null);
     return updateId;
+  }
+
+  public long addBookDataHistory(int id,int pagesRead,int slokasRead,String flag,String date){
+    ContentValues values = new ContentValues();
+    values.put(COLUMN_ID,id);
+    values.put(COLUMN_PAGES_READ,pagesRead);
+    values.put(COLUMN_SLOKAS_READ,slokasRead);
+    values.put(COLUMN_FLAG,flag);
+    values.put(COLUMN_DATE,date);
+    long insertId = database.insert(TABLE_BEASAGE_HISTORY, null,
+        values);
+
+    return insertId;
   }
 
   public ArrayList<BookItem> getAllBooks(){
